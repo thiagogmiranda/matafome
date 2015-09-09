@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">MataFome</string>
+    <string name="app_name">Mata Fome</string>
 
-    <string name="title_activity_principal">PrincipalActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_principal">Mata Fome</string>
+    <string name="dummy_button">ENTRAR</string>
+    <string name="dummy_content">MATE\nA SUA\nFOME</string>
+    <string name="small_description">Encontre o podrão mais próximo de você!</string>
 </resources>
