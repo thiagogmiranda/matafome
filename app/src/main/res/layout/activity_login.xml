@@ -13,13 +13,10 @@
         android:layout_marginBottom="8dp" android:visibility="gone" />
 
     <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp" />
 
             <LinearLayout android:id="@+id/plus_sign_out_buttons"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -57,6 +54,10 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
+            <com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp" />
         </LinearLayout>
     </ScrollView>
 
