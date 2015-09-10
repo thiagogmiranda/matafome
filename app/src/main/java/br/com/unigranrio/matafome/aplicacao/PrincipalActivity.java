@@ -41,10 +41,19 @@ public class PrincipalActivity extends Activity {
                     Intent intent = new Intent();
                     intent.setClass(btnContext, LoginActivity.class);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }
             });
             btn.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1 && resultCode == RESULT_OK){
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

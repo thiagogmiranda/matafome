@@ -1,6 +1,8 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -95,7 +97,23 @@ public class AtividadesActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_logout) {
+            SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+
+            editor.putBoolean("tem_usuario_logado", false);
+            editor.remove("email_usuario_logado");
+            editor.remove("senha_usuario_logado");
+
+            editor.commit();
+
+            Intent intent = new Intent();
+            intent.setClass(this, PrincipalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(intent);
+            finish();
+
             return true;
         }
 

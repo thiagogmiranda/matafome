@@ -17,11 +17,10 @@
     <string name="exemplo_email">panda@email.com</string>
     <string name="title_activity_criar_usuario">Criar Usuario</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="confirmar_senha">Confirmar Senha</string>
     <string name="nome">Nome</string>
     <string name="exemplo_nome">Fulano Silva</string>
-    <string name="title_activity_busca">BuscaActivity</string>
+    <string name="title_activity_busca">Mata Fome</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -31,4 +30,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+    <string name="logout">Sair</string>
 </resources>
