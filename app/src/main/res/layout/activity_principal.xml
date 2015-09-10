@@ -11,11 +11,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="30dp">
 
         <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:keepScreenOn="true" android:textColor="#33b5e5"
-            android:textStyle="bold" android:textSize="50sp"
+            android:textStyle="bold" android:textSize="70sp"
             android:text="@string/dummy_content"
             android:gravity="center" />
 
@@ -30,8 +31,9 @@
             android:layout_marginTop="10dp" />
     </LinearLayout>
 
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="bottom">
 
         <Button android:id="@+id/dummy_button"
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -39,7 +41,8 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp" />
     </FrameLayout>
 
 </FrameLayout>
