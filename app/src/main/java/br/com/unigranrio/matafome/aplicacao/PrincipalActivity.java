@@ -29,7 +29,7 @@ public class PrincipalActivity extends Activity {
             btn.setVisibility(View.INVISIBLE);
 
             Intent intent = new Intent();
-            intent.setClass(this, BuscaActivity.class);
+            intent.setClass(this, AtividadesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             startActivity(intent);
