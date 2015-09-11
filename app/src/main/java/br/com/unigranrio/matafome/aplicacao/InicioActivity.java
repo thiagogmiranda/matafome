@@ -11,14 +11,16 @@ import android.widget.Button;
 import br.com.unigranrio.matafome.R;
 
 public class InicioActivity extends Activity {
+    private Button btnEntrar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_inicio);
 
-        Button btn = (Button)findViewById(R.id.dummy_button);
-        btn.setVisibility(View.INVISIBLE);
+        btnEntrar = (Button)findViewById(R.id.dummy_button);
+        btnEntrar.setVisibility(View.INVISIBLE);
 
         final Context btnContext = this;
 
@@ -26,16 +28,11 @@ public class InicioActivity extends Activity {
         boolean jaLogou = prefs.getBoolean("tem_usuario_logado", false);
 
         if(jaLogou){
-            btn.setVisibility(View.INVISIBLE);
+            btnEntrar.setVisibility(View.INVISIBLE);
 
-            Intent intent = new Intent();
-            intent.setClass(this, PrincipalActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            startActivity(intent);
-            finish();
+            iniciarActivityPrincipal();
         } else {
-            btn.setOnClickListener(new View.OnClickListener() {
+            btnEntrar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
@@ -44,16 +41,25 @@ public class InicioActivity extends Activity {
                     startActivityForResult(intent, 1);
                 }
             });
-            btn.setVisibility(View.VISIBLE);
+            btnEntrar.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 1 && resultCode == RESULT_OK){
-
+            iniciarActivityPrincipal();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void iniciarActivityPrincipal(){
+        Intent intent = new Intent();
+        intent.setClass(this, PrincipalActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(intent);
+        finish();
     }
 }

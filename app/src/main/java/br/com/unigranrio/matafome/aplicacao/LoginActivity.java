@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
 
                     setResult(RESULT_OK);
-                    finishActivity(1);
+                    finish();
                 } else {
                     new AlertDialog.Builder(this)
                             .setMessage("Email e/ou senha inválidos.")
