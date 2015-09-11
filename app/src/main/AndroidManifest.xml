@@ -23,7 +23,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".aplicacao.PrincipalActivity"
+            android:name=".aplicacao.InicioActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_principal"
             android:theme="@style/FullscreenTheme" >
@@ -42,7 +42,7 @@
             android:label="@string/title_activity_criar_usuario" >
         </activity>
         <activity
-            android:name=".aplicacao.AtividadesActivity"
+            android:name=".aplicacao.PrincipalActivity"
             android:label="@string/title_activity_busca" >
         </activity>
     </application>

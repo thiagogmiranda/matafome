@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'Panda'
-            keyPassword 'panda123'
-            storeFile file('G:/Projetos/Miranda/matafome/debug.keystore.jks')
-            storePassword 'panda123'
-        }
     }
     compileSdkVersion 23
     buildToolsVersion "19.1.0"
@@ -24,7 +18,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.config
         }
     }
 }
