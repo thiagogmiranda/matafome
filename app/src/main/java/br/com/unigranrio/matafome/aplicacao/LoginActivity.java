@@ -5,18 +5,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import br.com.unigranrio.matafome.R;
+import br.com.unigranrio.matafome.aplicacao.client.GetUserAsyncTask;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
-import br.com.unigranrio.matafome.dominio.repositorios.UsuarioRepositorio;
-import br.com.unigranrio.matafome.infra.sqLite.config.SqlLiteHelper;
-import br.com.unigranrio.matafome.infra.sqLite.repositorios.UsuarioRepositorioSQLite;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,14 +29,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail;
     private EditText txtSenha;
 
-    private UsuarioRepositorio usuarioRepositorio;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        usuarioRepositorio = new UsuarioRepositorioSQLite(new SqlLiteHelper(this));
 
         btnCadastro = (Button)findViewById(R.id.btn_cadastro);
         btnLogin = (Button)findViewById(R.id.btn_login);
@@ -88,7 +87,13 @@ public class LoginActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         } else {
-            Usuario busca = usuarioRepositorio.obterPorLogin(email);
+            Usuario busca = null;
+
+            try {
+                busca = new GetUserAsyncTask().execute(email).get();
+            } catch (Exception e) {
+               Log.e("ERRO: ", e.getMessage(), e);
+            }
 
             if(busca != null){
                 if(busca.getSenha().equals(senha)){

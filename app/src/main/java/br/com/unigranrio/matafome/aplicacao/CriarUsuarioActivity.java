@@ -1,12 +1,9 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.dominio.acoes.CriarUsuario;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
-import br.com.unigranrio.matafome.infra.sqLite.config.SqlLiteHelper;
-import br.com.unigranrio.matafome.infra.sqLite.repositorios.UsuarioRepositorioSQLite;
 
 public class CriarUsuarioActivity extends AppCompatActivity {
 
@@ -27,15 +21,10 @@ public class CriarUsuarioActivity extends AppCompatActivity {
     private EditText txtSenha;
     private EditText txtConfirmacaoSenha;
 
-    private CriarUsuario criarUsuario;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_usuario);
-
-        criarUsuario = new CriarUsuario(new UsuarioRepositorioSQLite(new SqlLiteHelper(this)));
-
         txtNome = (EditText)findViewById(R.id.txt_nome_cadastro);
         txtEmail = (EditText)findViewById(R.id.txt_email_cadastro);
         txtSenha = (EditText)findViewById(R.id.txt_senha_cadastro);
@@ -90,7 +79,7 @@ public class CriarUsuarioActivity extends AppCompatActivity {
             usuario.setEmail(txtEmail.getText().toString());
             usuario.setSenha(txtSenha.getText().toString());
 
-            criarUsuario.executar(usuario);
+            //criarUsuario.executar(usuario);
 
             new AlertDialog.Builder(this)
                     .setMessage("Bem vindo ao mata fome.")
