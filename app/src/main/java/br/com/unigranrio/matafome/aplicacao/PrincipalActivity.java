@@ -1,8 +1,13 @@
 package br.com.unigranrio.matafome.aplicacao;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -15,10 +20,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import br.com.unigranrio.matafome.R;
+import br.com.unigranrio.matafome.aplicacao.client.ObterBarracasDentroDoRaioAsyncTask;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
 public class PrincipalActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnMapReadyCallback {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -115,6 +131,36 @@ public class PrincipalActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        LatLng sydney = new LatLng(-33.867, 151.206);
+
+        map.setMyLocationEnabled(true);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        try {
+            List<Negocio> negocios = new ObterBarracasDentroDoRaioAsyncTask().execute(500.00, location.getLatitude(), location.getLongitude()).get();
+
+            for(Negocio n : negocios){
+                map.addMarker(new MarkerOptions()
+                        .title(n.getNome())
+                        .snippet(n.getDescricao())
+                        .position(sydney));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
