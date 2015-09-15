@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
+import br.com.unigranrio.matafome.aplicacao.client.CriarUsuarioAsyncTask;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 public class CriarUsuarioActivity extends AppCompatActivity {
@@ -79,7 +80,7 @@ public class CriarUsuarioActivity extends AppCompatActivity {
             usuario.setEmail(txtEmail.getText().toString());
             usuario.setSenha(txtSenha.getText().toString());
 
-            //criarUsuario.executar(usuario);
+            new CriarUsuarioAsyncTask().execute(usuario);
 
             new AlertDialog.Builder(this)
                     .setMessage("Bem vindo ao mata fome.")
