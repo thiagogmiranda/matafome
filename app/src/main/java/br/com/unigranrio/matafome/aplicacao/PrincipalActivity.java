@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.GpsSatellite;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -23,6 +26,9 @@ import android.support.v4.widget.DrawerLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -59,6 +65,10 @@ public class PrincipalActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -135,28 +145,42 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap map) {
-        LatLng sydney = new LatLng(-33.867, 151.206);
+        final double radius = 150.00;
 
         map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+
+        // Get Current Location
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        Location myLocation = locationManager.getLastKnownLocation(provider);
 
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng deviceLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, 17.5f));
+
+        CircleOptions circleOptions = new CircleOptions()
+                .center(deviceLocation)
+                .radius(radius)
+                .fillColor(R.color.wallet_holo_blue_light)
+                .strokeWidth(0f);
+
+        map.addCircle(circleOptions);
 
         try {
-            List<Negocio> negocios = new ObterBarracasDentroDoRaioAsyncTask().execute(500.00, location.getLatitude(), location.getLongitude()).get();
+            List<Negocio> negocios = new ObterBarracasDentroDoRaioAsyncTask().execute(radius, deviceLocation.latitude, deviceLocation.longitude).get();
 
             for(Negocio n : negocios){
                 map.addMarker(new MarkerOptions()
                         .title(n.getNome())
                         .snippet(n.getDescricao())
-                        .position(sydney));
+                        .position(new LatLng(n.getLatitude(), n.getLongitude())));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.unigranrio.matafome.dominio.modelo.Negocio;
@@ -22,9 +22,9 @@ public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTask<Double, Void, 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        List<Negocio> retorno = restTemplate.getForObject("https://matafomeserver.herokuapp.com/negocio/obter-todos-dentro-raio?raio=" + raio
-                + "&lat=" + lat + "&lng=" + lng, ArrayList.class);
+        Negocio[] retorno = restTemplate.getForObject("https://matafomeserver.herokuapp.com/negocio/obter-todos-dentro-raio?raio=" + raio
+                + "&lat=" + lat + "&lng=" + lng, Negocio[].class);
 
-        return retorno;
+        return Arrays.asList(retorno);
     }
 }
