@@ -56,7 +56,7 @@ public class InicioActivity extends Activity {
 
     private void iniciarActivityPrincipal(){
         Intent intent = new Intent();
-        intent.setClass(this, PrincipalActivity.class);
+        intent.setClass(this, BuscarBarracaActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(intent);

@@ -23,8 +23,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB54hTEW-UBndhHNErf8f-sSS9p3rS8IOI"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB54hTEW-UBndhHNErf8f-sSS9p3rS8IOI" />
 
         <activity
             android:name=".aplicacao.InicioActivity"
@@ -46,8 +47,8 @@
             android:label="@string/title_activity_criar_usuario" >
         </activity>
         <activity
-            android:name=".aplicacao.PrincipalActivity"
-            android:label="@string/title_activity_busca" >
+            android:name=".aplicacao.BuscarBarracaActivity"
+            android:label="@string/title_activity_buscar_barraca" >
         </activity>
     </application>
 
