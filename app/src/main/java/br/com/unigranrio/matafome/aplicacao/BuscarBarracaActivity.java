@@ -146,10 +146,12 @@ public class BuscarBarracaActivity extends AppCompatActivity
     public void onMyLocationChange(Location location) {
         double distance = location.distanceTo(lastLocation);
 
-        if(distance >= 10){
+        if(distance >= 15){
             googleMap.clear();
 
             desenharLocalizador(location);
+
+            lastLocation = location;
         }
     }
 
