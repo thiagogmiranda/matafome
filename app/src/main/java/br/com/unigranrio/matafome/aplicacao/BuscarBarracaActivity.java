@@ -139,7 +139,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
         dadosBarracaSelecionada.setVisibility(View.VISIBLE);
 
-        return true;
+        return false;
     }
 
     @Override
