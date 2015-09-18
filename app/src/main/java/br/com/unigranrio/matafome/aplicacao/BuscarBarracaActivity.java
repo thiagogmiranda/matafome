@@ -28,7 +28,7 @@ import java.util.List;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.client.ObterBarracasDentroDoRaioAsyncTask;
-import br.com.unigranrio.matafome.dominio.modelo.Negocio;
+import br.com.unigranrio.matafome.dominio.modelo.Barraca;
 
 public class BuscarBarracaActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener {
@@ -98,15 +98,15 @@ public class BuscarBarracaActivity extends AppCompatActivity
         }
         lastLocation = locationManager.getLastKnownLocation(provider);
 
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 18.2f));
+
         desenharLocalizador(lastLocation);
     }
 
     private void desenharLocalizador(Location location) {
-        final double radius = 150.00;
+        final double radius = 75.00;
 
         LatLng deviceLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, 17.1f));
 
         CircleOptions circleOptions = new CircleOptions()
                 .center(deviceLocation)
@@ -117,9 +117,9 @@ public class BuscarBarracaActivity extends AppCompatActivity
         googleMap.addCircle(circleOptions);
 
         try {
-            List<Negocio> negocios = new ObterBarracasDentroDoRaioAsyncTask().execute(radius, deviceLocation.latitude, deviceLocation.longitude).get();
+            List<Barraca> negocios = new ObterBarracasDentroDoRaioAsyncTask().execute(radius, deviceLocation.latitude, deviceLocation.longitude).get();
 
-            for(Negocio n : negocios){
+            for(Barraca n : negocios){
                 googleMap.addMarker(new MarkerOptions()
                         .title(n.getNome())
                         .snippet(n.getDescricao())

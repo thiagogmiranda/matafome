@@ -119,13 +119,13 @@
     <orderEntry type="library" exported="" name="play-services-games-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-wallet-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-drive-7.8.0" level="project" />
-    <orderEntry type="library" exported="" name="matafome.modelo" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-analytics-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appindexing-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appinvite-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.6.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-7.8.0" level="project" />
+    <orderEntry type="library" exported="" name="br.com.unigranrio.matafome.dominio" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-7.8.0" level="project" />

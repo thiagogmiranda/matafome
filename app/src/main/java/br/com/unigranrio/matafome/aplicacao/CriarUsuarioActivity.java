@@ -10,9 +10,12 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.client.CriarUsuarioAsyncTask;
+import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
+import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 public class CriarUsuarioActivity extends AppCompatActivity {
@@ -80,19 +83,41 @@ public class CriarUsuarioActivity extends AppCompatActivity {
             usuario.setEmail(txtEmail.getText().toString());
             usuario.setSenha(txtSenha.getText().toString());
 
-            new CriarUsuarioAsyncTask().execute(usuario);
+            try {
+                ResultadoAcao resultado = new CriarUsuarioAsyncTask().execute(usuario).get();
 
-            new AlertDialog.Builder(this)
-                    .setMessage("Bem vindo ao mata fome.")
-                    .setTitle("Cadastro realizado!")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .show();
+                if(resultado.isSucesso()){
+                    new AlertDialog.Builder(this)
+                            .setMessage("Bem vindo ao mata fome.")
+                            .setTitle("Cadastro realizado!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .show();
+                } else {
+                    List<Mensagem> msgs = resultado.getMensagens();
+                    String mensagem = "";
+
+                    for (Mensagem m : msgs) {
+                        mensagem = mensagem.concat("- " + m.getTexto() + "\n");
+                    }
+
+                    new AlertDialog.Builder(this)
+                            .setMessage(mensagem)
+                            .setTitle("Atenção!")
+                            .setPositiveButton("OK", null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
