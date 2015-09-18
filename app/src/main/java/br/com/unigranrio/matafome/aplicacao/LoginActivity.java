@@ -23,6 +23,9 @@ import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static final String IS_USUARIO_LOGADO = "tem_usuario_logado";
+    public static final String EMAIL_USUARIO_LOGADO = "email_usuario_logado";
+
     private Button btnCadastro;
     private Button btnLogin;
 
@@ -101,9 +104,8 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
 
-                    editor.putBoolean("tem_usuario_logado", true);
-                    editor.putString("email_usuario_logado", email);
-                    editor.putString("senha_usuario_logado", senha);
+                    editor.putBoolean(IS_USUARIO_LOGADO, true);
+                    editor.putString(EMAIL_USUARIO_LOGADO, email);
 
                     editor.commit();
 

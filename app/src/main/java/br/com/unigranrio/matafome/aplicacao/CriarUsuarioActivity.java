@@ -86,7 +86,7 @@ public class CriarUsuarioActivity extends AppCompatActivity {
             try {
                 ResultadoAcao resultado = new CriarUsuarioAsyncTask().execute(usuario).get();
 
-                if(resultado.isSucesso()){
+                if(resultado.deuCerto()){
                     new AlertDialog.Builder(this)
                             .setMessage("Bem vindo ao mata fome.")
                             .setTitle("Cadastro realizado!")

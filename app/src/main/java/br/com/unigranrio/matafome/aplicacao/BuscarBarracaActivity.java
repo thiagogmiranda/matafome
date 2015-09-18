@@ -2,6 +2,8 @@ package br.com.unigranrio.matafome.aplicacao;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -64,14 +66,27 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.listar_barracas) {
+            return true;
+        } else if (id == R.id.sair) {
+            SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+
+            editor.putBoolean(LoginActivity.IS_USUARIO_LOGADO, false);
+            editor.remove(LoginActivity.EMAIL_USUARIO_LOGADO);
+
+            editor.commit();
+
+            Intent intent = new Intent();
+            intent.setClass(this, InicioActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
