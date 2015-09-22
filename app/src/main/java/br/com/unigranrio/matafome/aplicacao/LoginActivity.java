@@ -10,18 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.client.GetUserAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.client.ObterUsuarioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.client.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<Usuario> {
 
     public static final String IS_USUARIO_LOGADO = "tem_usuario_logado";
     public static final String EMAIL_USUARIO_LOGADO = "email_usuario_logado";
@@ -67,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         List<String> erros = new ArrayList<>();
 
         String email = txtEmail.getText().toString();
-        String senha = txtSenha.getText().toString();
+        String senha = getSenha();
 
         if("".equals(email)){
             erros.add("Informe um email");
@@ -90,43 +87,48 @@ public class LoginActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         } else {
-            Usuario busca = null;
-
             try {
-                busca = new GetUserAsyncTask().execute(email).get();
+                ObterUsuarioAsyncTask task = new ObterUsuarioAsyncTask(this);
+                task.setOnExecutedListener(this);
+                task.execute(email);
             } catch (Exception e) {
                Log.e("ERRO: ", e.getMessage(), e);
             }
-
-            if(busca != null){
-                if(busca.getSenha().equals(senha)){
-
-                    SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-
-                    editor.putBoolean(IS_USUARIO_LOGADO, true);
-                    editor.putString(EMAIL_USUARIO_LOGADO, email);
-
-                    editor.commit();
-
-                    setResult(RESULT_OK);
-                    finish();
-                } else {
-                    new AlertDialog.Builder(this)
-                            .setMessage("Email e/ou senha inválidos.")
-                            .setTitle("Atenção!")
-                            .setPositiveButton("OK", null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                }
-            } else {
-                new AlertDialog.Builder(this)
-                        .setMessage("Email e/ou senha inválidos.")
-                        .setTitle("Atenção!")
-                        .setPositiveButton("OK", null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
         }
+    }
+
+    private String getSenha(){
+        return txtSenha.getText().toString();
+    }
+
+    @Override
+    public void onAsyncTaskExecuted(Usuario usuario) {
+        if(credenciaisEstaoValidas(usuario)){
+            SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+
+            editor.putBoolean(IS_USUARIO_LOGADO, true);
+            editor.putString(EMAIL_USUARIO_LOGADO, usuario.getEmail());
+
+            editor.commit();
+
+            setResult(RESULT_OK);
+            finish();
+        } else {
+            showLoginErrorDialog();
+        }
+    }
+
+    private boolean credenciaisEstaoValidas(Usuario usuario){
+        return usuario != null && usuario.getSenha().equals(getSenha());
+    }
+
+    private void showLoginErrorDialog(){
+        new AlertDialog.Builder(this)
+                .setMessage("Email e/ou senha inválidos.")
+                .setTitle("Atenção!")
+                .setPositiveButton("OK", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
