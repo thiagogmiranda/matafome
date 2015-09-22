@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -46,6 +48,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
     private LinearLayout dadosBarracaSelecionada;
     private TextView nomeBarracaSelecionada;
     private TextView descBarracaSelecionada;
+    private SeekBar raioBuscaSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,25 @@ public class BuscarBarracaActivity extends AppCompatActivity
         dadosBarracaSelecionada = (LinearLayout)findViewById(R.id.dadosBarraca);
         nomeBarracaSelecionada = (TextView)findViewById(R.id.nome);
         descBarracaSelecionada = (TextView)findViewById(R.id.descricao);
+        raioBuscaSeekBar = (SeekBar)findViewById(R.id.raioBuscaSeekBar);
+
+        raioBuscaSeekBar.setMax(500);
+        raioBuscaSeekBar.setProgress(100);
+        raioBuscaSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                desenharLocalizador();
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -117,15 +139,17 @@ public class BuscarBarracaActivity extends AppCompatActivity
         }
         lastLocation = locationManager.getLastKnownLocation(provider);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 18.2f));
-
-        desenharLocalizador(lastLocation);
+        desenharLocalizador();
     }
 
-    private void desenharLocalizador(Location location) {
-        final double radius = 75.00;
+    private void desenharLocalizador() {
+        final double radius = raioBuscaSeekBar.getProgress();
 
-        LatLng deviceLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.clear();
+
+        LatLng deviceLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, calcularZoom()));
 
         CircleOptions circleOptions = new CircleOptions()
                 .center(deviceLocation)
@@ -168,11 +192,9 @@ public class BuscarBarracaActivity extends AppCompatActivity
         double distance = location.distanceTo(lastLocation);
 
         if(distance >= 15){
-            googleMap.clear();
-
-            desenharLocalizador(location);
-
             lastLocation = location;
+
+            desenharLocalizador();
         }
     }
 
@@ -189,5 +211,9 @@ public class BuscarBarracaActivity extends AppCompatActivity
                     .snippet(n.getDescricao())
                     .position(new LatLng(n.getLatitude(), n.getLongitude())));
         }
+    }
+
+    private float calcularZoom(){
+        return 18.00f - ((float)raioBuscaSeekBar.getProgress() / 175.00f);
     }
 }
