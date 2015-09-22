@@ -32,4 +32,6 @@
     <string name="exemplo_nome_bar">Pipoca do Frene</string>
     <string name="exemplo_desc">Melhor pipoca do Rio</string>
     <string name="listar_barracas">Barracas</string>
+
+    <string name="url_criar_usuario">https://matafomeserver.herokuapp.com/usuario/criar</string>
 </resources>
