@@ -1,13 +1,12 @@
 package br.com.unigranrio.matafome.aplicacao.client;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.unigranrio.matafome.R;
+import br.com.unigranrio.matafome.aplicacao.App;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 /**
@@ -20,7 +19,10 @@ public class ObterUsuarioAsyncTask extends AsyncTaskAbstrata<String, Void, Usuar
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-            Usuario usuario = restTemplate.getForObject("https://matafomeserver.herokuapp.com/usuario/obter-por-email?email=" + voids[0], Usuario.class);
+            String email = voids[0];
+            String url = App.montarUrlRest(R.string.url_obter_usuario_por_email, email);
+
+            Usuario usuario = restTemplate.getForObject(url, Usuario.class);
 
             return usuario;
         } catch (Exception e){

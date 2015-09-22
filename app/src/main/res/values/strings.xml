@@ -33,5 +33,10 @@
     <string name="exemplo_desc">Melhor pipoca do Rio</string>
     <string name="listar_barracas">Barracas</string>
 
-    <string name="url_criar_usuario">https://matafomeserver.herokuapp.com/usuario/criar</string>
+    <!-- Rest Urls -->
+    <string name="server_url">https://matafomeserver.herokuapp.com/</string>
+    <string name="url_criar_usuario">usuario/criar</string>
+    <string name="url_obter_usuario_por_email">usuario/obter-por-email?email=%s</string>
+    <string name="url_obter_barracas_proximas">barraca/obter-todas-dentro-raio?raio=%1$.2f&amp;lat=%2$.10f&amp;lng=%3$.10f</string>
+
 </resources>
