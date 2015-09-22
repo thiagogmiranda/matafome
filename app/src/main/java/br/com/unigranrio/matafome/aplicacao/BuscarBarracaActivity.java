@@ -1,6 +1,7 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,10 +31,13 @@ import java.util.List;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.client.ObterBarracasDentroDoRaioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.client.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.modelo.Barraca;
 
 public class BuscarBarracaActivity extends AppCompatActivity
-        implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener {
+        implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+            GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener,
+        OnAsyncTaskExecutedListener<List<Barraca>> {
     private GoogleMap googleMap;
     private Location lastLocation;
 
@@ -132,14 +136,16 @@ public class BuscarBarracaActivity extends AppCompatActivity
         googleMap.addCircle(circleOptions);
 
         try {
-            List<Barraca> negocios = new ObterBarracasDentroDoRaioAsyncTask().execute(radius, deviceLocation.latitude, deviceLocation.longitude).get();
+            ObterBarracasDentroDoRaioAsyncTask task = new ObterBarracasDentroDoRaioAsyncTask();
 
-            for(Barraca n : negocios){
-                googleMap.addMarker(new MarkerOptions()
-                        .title(n.getNome())
-                        .snippet(n.getDescricao())
-                        .position(new LatLng(n.getLatitude(), n.getLongitude())));
-            }
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Um minuto..");
+            progressDialog.setMessage("Carregando lista de barracas próximas de você..");
+
+            task.setProgressDialog(progressDialog);
+            task.setOnExecutedListener(this);
+
+            task.execute(radius, deviceLocation.latitude, deviceLocation.longitude);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,5 +179,15 @@ public class BuscarBarracaActivity extends AppCompatActivity
     @Override
     public void onMapClick(LatLng latLng) {
         dadosBarracaSelecionada.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onAsyncTaskExecuted(List<Barraca> barracas) {
+        for(Barraca n : barracas){
+            googleMap.addMarker(new MarkerOptions()
+                    .title(n.getNome())
+                    .snippet(n.getDescricao())
+                    .position(new LatLng(n.getLatitude(), n.getLongitude())));
+        }
     }
 }

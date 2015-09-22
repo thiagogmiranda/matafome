@@ -12,7 +12,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Barraca;
 /**
  * Created by WebFis33 on 15/09/2015.
  */
-public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTask<Double, Void, List<Barraca>> {
+public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTaskAbstrata<Double, Void, List<Barraca>> {
     @Override
     protected List<Barraca> doInBackground(Double... params) {
         double raio = params[0];

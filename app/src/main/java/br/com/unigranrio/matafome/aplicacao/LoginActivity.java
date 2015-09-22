@@ -1,6 +1,7 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -88,8 +89,15 @@ public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecu
                     .show();
         } else {
             try {
-                ObterUsuarioAsyncTask task = new ObterUsuarioAsyncTask(this);
+                ObterUsuarioAsyncTask task = new ObterUsuarioAsyncTask();
+
+                ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("Um minuto..");
+                progressDialog.setMessage("Obtendo dados do usuário..");
+
+                task.setProgressDialog(progressDialog);
                 task.setOnExecutedListener(this);
+
                 task.execute(email);
             } catch (Exception e) {
                Log.e("ERRO: ", e.getMessage(), e);

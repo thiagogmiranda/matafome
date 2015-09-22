@@ -13,27 +13,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 /**
  * Created by Thiago on 15/09/2015.
  */
-public class ObterUsuarioAsyncTask extends AsyncTask<String, Void, Usuario> {
-    private ProgressDialog progressDialog;
-    private OnAsyncTaskExecutedListener<Usuario> ouvinte;
-
-    public ObterUsuarioAsyncTask(Context context) {
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setIndeterminate(true);
-    }
-
-    public void setOnExecutedListener(OnAsyncTaskExecutedListener<Usuario> ouvinte){
-        this.ouvinte = ouvinte;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        progressDialog.setTitle("Um minuto..");
-        progressDialog.setMessage("Obtendo dados do usuário..");
-        progressDialog.show();
-    }
-
+public class ObterUsuarioAsyncTask extends AsyncTaskAbstrata<String, Void, Usuario> {
     @Override
     protected Usuario doInBackground(String... voids) {
         try {
@@ -47,11 +27,5 @@ public class ObterUsuarioAsyncTask extends AsyncTask<String, Void, Usuario> {
             Log.e("Get User:", e.getMessage(), e);
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Usuario usuario) {
-        progressDialog.dismiss();
-        ouvinte.onAsyncTaskExecuted(usuario);
     }
 }
