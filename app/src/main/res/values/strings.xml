@@ -15,7 +15,7 @@
     <string name="signup_button">CRIAR USUARIO</string>
     <string name="exemplo_senha">***********</string>
     <string name="exemplo_email">panda@email.com</string>
-    <string name="title_activity_criar_usuario">Criar Usuario</string>
+    <string name="title_activity_criar_usuario">Novo usuário</string>
 
     <string name="confirmar_senha">Confirmar Senha</string>
     <string name="nome">Nome</string>
