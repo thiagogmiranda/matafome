@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -118,6 +119,12 @@ public class BuscarBarracaActivity extends AppCompatActivity
         lastLocation = locationManager.getLastKnownLocation(provider);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 18.2f));
+
+  /*      CameraPosition cameraPosition = new CameraPosition.Builder()
+                .tilt(45)
+                .build();
+
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
 
         desenharLocalizador(lastLocation);
     }
