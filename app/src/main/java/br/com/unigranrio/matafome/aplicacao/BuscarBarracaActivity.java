@@ -49,6 +49,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
     private LinearLayout dadosBarracaSelecionada;
     private TextView nomeBarracaSelecionada;
     private TextView descBarracaSelecionada;
+    private TextView lblRaioBusca;
     private SeekBar raioBuscaSeekBar;
 
     @Override
@@ -59,6 +60,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
         dadosBarracaSelecionada = (LinearLayout)findViewById(R.id.dadosBarraca);
         nomeBarracaSelecionada = (TextView)findViewById(R.id.nome);
         descBarracaSelecionada = (TextView)findViewById(R.id.descricao);
+        lblRaioBusca = (TextView)findViewById(R.id.lblRaioBusca);
         raioBuscaSeekBar = (SeekBar)findViewById(R.id.raioBuscaSeekBar);
 
         raioBuscaSeekBar.setMax(500);
@@ -75,6 +77,8 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                lblRaioBusca.setText(String.valueOf(seekBar.getProgress()));
+
                 desenharLocalizador();
             }
         });
@@ -206,15 +210,32 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
     @Override
     public void onAsyncTaskExecuted(List<Barraca> barracas) {
-        for(Barraca n : barracas){
+        for(Barraca barraca : barracas){
+            double distancia = distancia(lastLocation.getLatitude(), lastLocation.getLongitude(), barraca.getLatitude(), barraca.getLongitude());
+
             googleMap.addMarker(new MarkerOptions()
-                    .title(n.getNome())
-                    .snippet(n.getDescricao())
-                    .position(new LatLng(n.getLatitude(), n.getLongitude())));
+                    .title(barraca.getNome())
+                    .snippet(String.format("%.2f metros", distancia))
+                    .position(new LatLng(barraca.getLatitude(), barraca.getLongitude())));
         }
     }
 
     private float calcularZoom(){
         return 18.00f - ((float)raioBuscaSeekBar.getProgress() / 175.00f);
+    }
+
+    private double distancia(double latA, double lngA, double latB, double lngB)
+    {
+        double distanciaKM = (Math.asin(
+                    Math.sqrt(
+                            Math.pow(Math.sin(Math.toRadians(latB - latA)/2), 2) +
+                            Math.pow(Math.sin(Math.toRadians(lngB - lngA)/2), 2) *
+                            Math.cos(Math.toRadians(latA)) *
+                            Math.cos(Math.toRadians(latB))
+                    )
+        ) * 6371) * 2;
+
+        // Converte para metros
+        return distanciaKM * 1000;
     }
 }

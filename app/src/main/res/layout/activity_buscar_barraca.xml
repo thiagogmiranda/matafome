@@ -11,6 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/raio_default"
+            android:id="@+id/lblRaioBusca"
+            android:textAlignment="gravity"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center" />
+
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
