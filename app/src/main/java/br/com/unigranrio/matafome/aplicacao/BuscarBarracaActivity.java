@@ -39,7 +39,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Barraca;
 
 public class BuscarBarracaActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-            GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener,
+        GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener,
         OnAsyncTaskExecutedListener<List<Barraca>> {
     private GoogleMap googleMap;
     private Location lastLocation;
@@ -57,11 +57,11 @@ public class BuscarBarracaActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_barraca);
 
-        dadosBarracaSelecionada = (LinearLayout)findViewById(R.id.dadosBarraca);
-        nomeBarracaSelecionada = (TextView)findViewById(R.id.nome);
-        descBarracaSelecionada = (TextView)findViewById(R.id.descricao);
-        lblRaioBusca = (TextView)findViewById(R.id.lblRaioBusca);
-        raioBuscaSeekBar = (SeekBar)findViewById(R.id.raioBuscaSeekBar);
+        dadosBarracaSelecionada = (LinearLayout) findViewById(R.id.dadosBarraca);
+        nomeBarracaSelecionada = (TextView) findViewById(R.id.nome);
+        descBarracaSelecionada = (TextView) findViewById(R.id.descricao);
+        lblRaioBusca = (TextView) findViewById(R.id.lblRaioBusca);
+        raioBuscaSeekBar = (SeekBar) findViewById(R.id.raioBuscaSeekBar);
 
         raioBuscaSeekBar.setMax(500);
         raioBuscaSeekBar.setProgress(100);
@@ -132,17 +132,22 @@ public class BuscarBarracaActivity extends AppCompatActivity
         googleMap.setOnMyLocationChangeListener(this);
         googleMap.setOnMapClickListener(this);
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
 
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Get Current Location
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        lastLocation = locationManager.getLastKnownLocation(provider);
+
+        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if(locationGPS != null){
+            lastLocation = locationGPS;
+        } else {
+            lastLocation = locationNet;
+        }
 
         desenharLocalizador();
     }
@@ -151,7 +156,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
         final double radius = raioBuscaSeekBar.getProgress();
 
         googleMap.clear();
-
+    if(lastLocation != null) {
         LatLng deviceLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, calcularZoom()));
@@ -179,6 +184,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
+    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -194,7 +200,11 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
     @Override
     public void onMyLocationChange(Location location) {
-        double distance = location.distanceTo(lastLocation);
+        double distance = 0;
+
+        if(lastLocation != null) {
+          distance = location.distanceTo(lastLocation);
+        }
 
         if(distance >= 15){
             lastLocation = location;
