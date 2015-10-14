@@ -155,7 +155,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
     private void desenharLocalizador() {
         acoesContainer.setVisibility(View.INVISIBLE);
 
-        final double radius = raioBuscaSeekBar.getProgress();
+        final int radius = raioBuscaSeekBar.getProgress();
 
         googleMap.clear();
     if(lastLocation != null) {
@@ -174,14 +174,15 @@ public class BuscarBarracaActivity extends AppCompatActivity
         try {
             ObterBarracasDentroDoRaioAsyncTask task = new ObterBarracasDentroDoRaioAsyncTask();
 
+            String mensagem = getResources().getString(R.string.pesquisando_lanches);
+
             ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Um minuto..");
-            progressDialog.setMessage("Carregando lista de barracas próximas de você..");
+            progressDialog.setMessage(String.format(mensagem, radius));
 
             task.setProgressDialog(progressDialog);
             task.setOnExecutedListener(this);
 
-            task.execute(radius, deviceLocation.latitude, deviceLocation.longitude);
+            task.execute((double)radius, deviceLocation.latitude, deviceLocation.longitude);
         } catch (Exception e) {
             e.printStackTrace();
         }
