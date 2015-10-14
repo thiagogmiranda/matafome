@@ -31,8 +31,8 @@
     <string name="avaliacoes">Avaliações</string>
     <string name="exemplo_nome_bar">Pipoca do Frene</string>
     <string name="exemplo_desc">Melhor pipoca do Rio</string>
-    <string name="listar_barracas">Barracas</string>
-    <string name="raio_default">100</string>
+    <string name="listar_barracas">Pontos de Venda</string>
+    <string name="raio_default">100 m</string>
 
     <!-- Rest Urls -->
     <string name="server_url">https://matafomeserver.herokuapp.com/</string>

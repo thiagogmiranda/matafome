@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.client.ObterUsuarioAsyncTask;
-import br.com.unigranrio.matafome.aplicacao.client.OnAsyncTaskExecutedListener;
+import br.com.unigranrio.matafome.aplicacao.webservices.ObterUsuarioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<Usuario> {

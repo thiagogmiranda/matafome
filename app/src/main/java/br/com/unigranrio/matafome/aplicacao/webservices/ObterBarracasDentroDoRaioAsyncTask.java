@@ -1,6 +1,4 @@
-package br.com.unigranrio.matafome.aplicacao.client;
-
-import android.os.AsyncTask;
+package br.com.unigranrio.matafome.aplicacao.webservices;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +24,13 @@ public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTaskAbstrata<Double
 
         String url = App.montarUrlRest(R.string.url_obter_barracas_proximas, raio, lat, lng);
 
-        Barraca[] retorno = restTemplate.getForObject(url, Barraca[].class);
+        Barraca[] retorno = new Barraca[0];
+
+        try {
+           retorno = restTemplate.getForObject(url, Barraca[].class);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         return Arrays.asList(retorno);
     }

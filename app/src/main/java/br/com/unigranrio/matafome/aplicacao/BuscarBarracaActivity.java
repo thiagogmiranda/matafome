@@ -6,12 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,18 +22,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.client.ObterBarracasDentroDoRaioAsyncTask;
-import br.com.unigranrio.matafome.aplicacao.client.OnAsyncTaskExecutedListener;
+import br.com.unigranrio.matafome.aplicacao.webservices.ObterBarracasDentroDoRaioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.modelo.Barraca;
 
 public class BuscarBarracaActivity extends AppCompatActivity
@@ -45,10 +42,8 @@ public class BuscarBarracaActivity extends AppCompatActivity
     private Location lastLocation;
 
     private Marker markerSelecao;
+    private LinearLayout acoesContainer;
 
-    private LinearLayout dadosBarracaSelecionada;
-    private TextView nomeBarracaSelecionada;
-    private TextView descBarracaSelecionada;
     private TextView lblRaioBusca;
     private SeekBar raioBuscaSeekBar;
 
@@ -57,17 +52,18 @@ public class BuscarBarracaActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_barraca);
 
-        dadosBarracaSelecionada = (LinearLayout) findViewById(R.id.dadosBarraca);
-        nomeBarracaSelecionada = (TextView) findViewById(R.id.nome);
-        descBarracaSelecionada = (TextView) findViewById(R.id.descricao);
         lblRaioBusca = (TextView) findViewById(R.id.lblRaioBusca);
         raioBuscaSeekBar = (SeekBar) findViewById(R.id.raioBuscaSeekBar);
+        acoesContainer = (LinearLayout)findViewById(R.id.acoesContainer);
+
+        acoesContainer.setVisibility(View.INVISIBLE);
 
         raioBuscaSeekBar.setMax(500);
         raioBuscaSeekBar.setProgress(100);
         raioBuscaSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                lblRaioBusca.setText(String.format("%d m", seekBar.getProgress()));
             }
 
             @Override
@@ -77,7 +73,11 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                lblRaioBusca.setText(String.valueOf(seekBar.getProgress()));
+                int raio = seekBar.getProgress();
+
+                if(raio < 50){
+                    seekBar.setProgress(50);
+                }
 
                 desenharLocalizador();
             }
@@ -153,6 +153,8 @@ public class BuscarBarracaActivity extends AppCompatActivity
     }
 
     private void desenharLocalizador() {
+        acoesContainer.setVisibility(View.INVISIBLE);
+
         final double radius = raioBuscaSeekBar.getProgress();
 
         googleMap.clear();
@@ -190,10 +192,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
     public boolean onMarkerClick(Marker marker) {
         this.markerSelecao = marker;
 
-        nomeBarracaSelecionada.setText(marker.getTitle());
-        descBarracaSelecionada.setText(marker.getSnippet());
-
-        dadosBarracaSelecionada.setVisibility(View.VISIBLE);
+        acoesContainer.setVisibility(View.VISIBLE);
 
         return false;
     }
@@ -215,7 +214,7 @@ public class BuscarBarracaActivity extends AppCompatActivity
 
     @Override
     public void onMapClick(LatLng latLng) {
-        dadosBarracaSelecionada.setVisibility(View.INVISIBLE);
+        acoesContainer.setVisibility(View.INVISIBLE);
     }
 
     @Override
