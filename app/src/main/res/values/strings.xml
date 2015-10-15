@@ -20,7 +20,6 @@
     <string name="confirmar_senha">Confirmar Senha</string>
     <string name="nome">Nome</string>
     <string name="exemplo_nome">Fulano Silva</string>
-    <string name="title_activity_busca">Mata Fome</string>
 
     <string name="logout">Sair</string>
 
@@ -31,7 +30,6 @@
     <string name="avaliacoes">Avaliações</string>
     <string name="exemplo_nome_bar">Pipoca do Frene</string>
     <string name="exemplo_desc">Melhor pipoca do Rio</string>
-    <string name="listar_barracas">Meus Pontos de Venda</string>
     <string name="raio_default">100 m</string>
 
     <!-- Rest Urls -->
@@ -40,5 +38,9 @@
     <string name="url_obter_usuario_por_email">usuario/obter-por-email?email=%s</string>
     <string name="url_obter_barracas_proximas">barraca/obter-todas-dentro-raio?raio=%1$.2f&amp;lat=%2$.10f&amp;lng=%3$.10f</string>
     <string name="pesquisando_lanches">Pesquisando lanches rápidos dentro de %d metros.</string>
+    <string name="item_ponto_venda">Ponto Venda</string>
+    <string name="url_obter_pontos_venda_usuario">barraca/obter-todas-usuario?email=%s</string>
+    <string name="title_activity_lista_pontos_venda">Meus Pontos de Venda</string>
+    <string name="listar_barracas">Meus Pontos de Venda</string>
 
 </resources>

@@ -92,7 +92,6 @@ public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecu
                 ObterUsuarioAsyncTask task = new ObterUsuarioAsyncTask();
 
                 ProgressDialog progressDialog = new ProgressDialog(this);
-                progressDialog.setTitle("Um minuto..");
                 progressDialog.setMessage("Obtendo dados do usuário..");
 
                 task.setProgressDialog(progressDialog);
