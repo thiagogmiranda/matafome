@@ -42,5 +42,10 @@
     <string name="url_obter_pontos_venda_usuario">barraca/obter-todas-usuario?email=%s</string>
     <string name="title_activity_lista_pontos_venda">Meus Pontos de Venda</string>
     <string name="listar_barracas">Meus Pontos de Venda</string>
+    <string name="cadastrar_ponto_venda">cadastrar</string>
+    <string name="nome_ponto_venda">Nome</string>
+    <string name="descricao_ponto_venda">Descrição</string>
+    <string name="localizacao_ponto_venda">Localização</string>
+    <string name="salvar_ponto_venda">salvar</string>
 
 </resources>
