@@ -1,4 +1,4 @@
-package br.com.unigranrio.matafome.aplicacao.client;
+package br.com.unigranrio.matafome.aplicacao.webservices;
 
 import android.util.Log;
 

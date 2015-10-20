@@ -48,8 +48,14 @@
             android:label="@string/title_activity_criar_usuario" >
         </activity>
         <activity
-            android:name=".aplicacao.BuscarBarracaActivity"
+            android:name=".aplicacao.PesquisaLanchesRapidosActivity"
             android:label="@string/title_activity_buscar_barraca" >
+        </activity>
+        <activity
+            android:name=".aplicacao.ListaPontosVendaActivity"
+            android:label="@string/title_activity_lista_pontos_venda" >
+        </activity>
+        <activity android:name=".aplicacao.CadastrarPontoVendaActivity" >
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package br.com.unigranrio.matafome.aplicacao.client;
+package br.com.unigranrio.matafome.aplicacao.webservices;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;

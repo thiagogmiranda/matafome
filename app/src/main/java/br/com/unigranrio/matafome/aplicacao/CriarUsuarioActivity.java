@@ -3,19 +3,18 @@ package br.com.unigranrio.matafome.aplicacao;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.client.CriarUsuarioAsyncTask;
-import br.com.unigranrio.matafome.aplicacao.client.OnAsyncTaskExecutedListener;
+import br.com.unigranrio.matafome.aplicacao.webservices.CriarUsuarioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
 import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;

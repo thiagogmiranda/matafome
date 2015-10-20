@@ -1,4 +1,4 @@
-package br.com.unigranrio.matafome.aplicacao.client;
+package br.com.unigranrio.matafome.aplicacao.webservices;
 
 /**
  * Created by WebFis33 on 22/09/2015.
