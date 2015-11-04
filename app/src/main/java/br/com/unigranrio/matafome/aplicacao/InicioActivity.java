@@ -12,6 +12,7 @@ import br.com.unigranrio.matafome.R;
 
 public class InicioActivity extends Activity {
     private Button btnEntrar;
+    private Button btnCadastrarUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +20,11 @@ public class InicioActivity extends Activity {
 
         setContentView(R.layout.activity_inicio);
 
-        btnEntrar = (Button)findViewById(R.id.dummy_button);
+        btnEntrar = (Button)findViewById(R.id.btnEntrar);
+        btnCadastrarUsuario = (Button)findViewById(R.id.btnEntrar);
+
         btnEntrar.setVisibility(View.INVISIBLE);
+        btnCadastrarUsuario.setVisibility(View.INVISIBLE);
 
         final Context btnContext = this;
 
@@ -29,6 +33,7 @@ public class InicioActivity extends Activity {
 
         if(jaLogou){
             btnEntrar.setVisibility(View.INVISIBLE);
+            btnCadastrarUsuario.setVisibility(View.INVISIBLE);
 
             iniciarActivityPrincipal();
         } else {
@@ -41,7 +46,11 @@ public class InicioActivity extends Activity {
                     startActivityForResult(intent, 1);
                 }
             });
+
+            // Adicionar listener de cadastrar
+
             btnEntrar.setVisibility(View.VISIBLE);
+            btnCadastrarUsuario.setVisibility(View.VISIBLE);
         }
     }
 

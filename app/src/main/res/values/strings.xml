@@ -47,5 +47,8 @@
     <string name="descricao_ponto_venda">Descrição</string>
     <string name="localizacao_ponto_venda">Localização</string>
     <string name="salvar_ponto_venda">salvar</string>
+    <string name="cadastre_se">CADASTRE-SE</string>
+    <string name="entre">ENTRE</string>
+    <string name="ou">OU</string>
 
 </resources>
