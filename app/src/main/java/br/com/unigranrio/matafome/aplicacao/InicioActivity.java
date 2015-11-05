@@ -1,7 +1,6 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,24 +13,25 @@ public class InicioActivity extends Activity {
     private Button btnEntrar;
     private Button btnCadastrarUsuario;
 
+    private static final int LOGIN = 1;
+    private static final int CADASTRO = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_inicio);
 
-        btnEntrar = (Button)findViewById(R.id.btnEntrar);
-        btnCadastrarUsuario = (Button)findViewById(R.id.btnEntrar);
+        btnEntrar = (Button) findViewById(R.id.btnEntrar);
+        btnCadastrarUsuario = (Button) findViewById(R.id.btnCadastrarUsuario);
 
         btnEntrar.setVisibility(View.INVISIBLE);
         btnCadastrarUsuario.setVisibility(View.INVISIBLE);
 
-        final Context btnContext = this;
+        SharedPreferences prefs = getSharedPreferences("matafome", 0);
+        boolean jaLogou = prefs.getBoolean("jalogou", false);
 
-        SharedPreferences prefs = getSharedPreferences("mata_fome", 0);
-        boolean jaLogou = prefs.getBoolean("tem_usuario_logado", false);
-
-        if(jaLogou){
+        if (jaLogou) {
             btnEntrar.setVisibility(View.INVISIBLE);
             btnCadastrarUsuario.setVisibility(View.INVISIBLE);
 
@@ -40,14 +40,16 @@ public class InicioActivity extends Activity {
             btnEntrar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(btnContext, LoginActivity.class);
-
-                    startActivityForResult(intent, 1);
+                    abrirActivityLogin();
                 }
             });
 
-            // Adicionar listener de cadastrar
+            btnCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    abrirActivityCadastroUsuario();
+                }
+            });
 
             btnEntrar.setVisibility(View.VISIBLE);
             btnCadastrarUsuario.setVisibility(View.VISIBLE);
@@ -56,19 +58,50 @@ public class InicioActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            iniciarActivityPrincipal();
+        switch (requestCode) {
+            case LOGIN:
+                tratarResultadoLogin(resultCode);
+                break;
+            case CADASTRO:
+                tratarResultadoCadastro(resultCode);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void iniciarActivityPrincipal(){
+    private void tratarResultadoCadastro(int resultCode) {
+        if (resultCode == RESULT_OK) {
+            abrirActivityLogin();
+        }
+    }
+
+    private void tratarResultadoLogin(int resultCode) {
+        if (resultCode == RESULT_OK) {
+            iniciarActivityPrincipal();
+        }
+    }
+
+    private void iniciarActivityPrincipal() {
         Intent intent = new Intent();
         intent.setClass(this, PesquisaLanchesRapidosActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(intent);
         finish();
+    }
+
+    private void abrirActivityLogin() {
+        Intent intent = new Intent();
+        intent.setClass(this, LoginActivity.class);
+
+        startActivityForResult(intent, 1);
+    }
+
+    private void abrirActivityCadastroUsuario() {
+        Intent intent = new Intent();
+        intent.setClass(this, CriarUsuarioActivity.class);
+
+        startActivity(intent);
     }
 }

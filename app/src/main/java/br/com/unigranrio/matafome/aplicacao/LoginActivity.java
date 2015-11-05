@@ -24,7 +24,6 @@ public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecu
     public static final String IS_USUARIO_LOGADO = "tem_usuario_logado";
     public static final String EMAIL_USUARIO_LOGADO = "email_usuario_logado";
 
-    private Button btnCadastro;
     private Button btnLogin;
 
     private EditText txtEmail;
@@ -35,30 +34,16 @@ public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btnCadastro = (Button)findViewById(R.id.btn_cadastro);
         btnLogin = (Button)findViewById(R.id.btn_login);
         txtEmail = (EditText)findViewById(R.id.txt_email);
         txtSenha = (EditText)findViewById(R.id.txt_senha);
 
-        btnCadastro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                criarUsuario();
-            }
-        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fazerLogin();
             }
         });
-    }
-
-    private void criarUsuario(){
-        Intent intent = new Intent();
-        intent.setClass(this, CriarUsuarioActivity.class);
-
-        startActivity(intent);
     }
 
     private void fazerLogin(){
