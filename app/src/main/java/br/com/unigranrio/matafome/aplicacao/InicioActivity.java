@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import br.com.unigranrio.matafome.R;
+import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 public class InicioActivity extends Activity {
     private Button btnEntrar;
@@ -28,10 +29,9 @@ public class InicioActivity extends Activity {
         btnEntrar.setVisibility(View.INVISIBLE);
         btnCadastrarUsuario.setVisibility(View.INVISIBLE);
 
-        SharedPreferences prefs = getSharedPreferences("matafome", 0);
-        boolean jaLogou = prefs.getBoolean("jalogou", false);
+        Usuario usuario = App.obterUsuarioLogado();
 
-        if (jaLogou) {
+        if (usuario != null) {
             btnEntrar.setVisibility(View.INVISIBLE);
             btnCadastrarUsuario.setVisibility(View.INVISIBLE);
 
@@ -43,7 +43,6 @@ public class InicioActivity extends Activity {
                     abrirActivityLogin();
                 }
             });
-
             btnCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,6 +82,8 @@ public class InicioActivity extends Activity {
     }
 
     private void iniciarActivityPrincipal() {
+        //Este método deve verifical qual o tipo de usuário está logado para decidir para qual tela redirecionar
+
         Intent intent = new Intent();
         intent.setClass(this, PesquisaLanchesRapidosActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

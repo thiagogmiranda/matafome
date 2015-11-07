@@ -20,10 +20,6 @@ import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListe
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<Usuario> {
-
-    public static final String IS_USUARIO_LOGADO = "tem_usuario_logado";
-    public static final String EMAIL_USUARIO_LOGADO = "email_usuario_logado";
-
     private Button btnLogin;
 
     private EditText txtEmail;
@@ -96,13 +92,7 @@ public class LoginActivity extends AppCompatActivity implements OnAsyncTaskExecu
     @Override
     public void onAsyncTaskExecuted(Usuario usuario) {
         if(credenciaisEstaoValidas(usuario)){
-            SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-
-            editor.putBoolean(IS_USUARIO_LOGADO, true);
-            editor.putString(EMAIL_USUARIO_LOGADO, usuario.getEmail());
-
-            editor.commit();
+            App.efetuarLogin(usuario);
 
             setResult(RESULT_OK);
             finish();

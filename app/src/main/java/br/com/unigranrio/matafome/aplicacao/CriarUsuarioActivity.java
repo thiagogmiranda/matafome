@@ -3,6 +3,8 @@ package br.com.unigranrio.matafome.aplicacao;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -46,38 +48,27 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
     }
 
     private void criarUsuario(){
-        List<String> erros = new ArrayList<>();
-
         String nome = txtNome.getText().toString();
         String email = txtEmail.getText().toString();
         String senha = txtSenha.getText().toString();
         String confirmaSenha = txtConfirmacaoSenha.getText().toString();
 
+        List<Mensagem> erros = new ArrayList<>();
+
         if("".equals(nome)){
-            erros.add("Informe um nome");
+            erros.add(new Mensagem("Informe um nome"));
         }
         if("".equals(email)){
-            erros.add("Informe um email");
+            erros.add(new Mensagem("Informe um email"));
         }
         if("".equals(senha)){
-            erros.add("Informe uma senha");
+            erros.add(new Mensagem("Informe uma senha"));
         } else if(!confirmaSenha.equals(senha)){
-            erros.add("Senhas não conferem");
+            erros.add(new Mensagem("Senhas não conferem"));
         }
 
         if(erros.size() > 0){
-            String mensagem = "";
-
-            for (String erro : erros) {
-                mensagem = mensagem.concat("- " + erro + "\n");
-            }
-            
-            new AlertDialog.Builder(this)
-                    .setMessage(mensagem)
-                    .setTitle("Atenção!")
-                    .setPositiveButton("OK", null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            exibirMensagensDeErro(erros);
         } else {
             Usuario usuario = new Usuario();
             usuario.setNome(txtNome.getText().toString());
@@ -103,33 +94,45 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
     }
 
     @Override
-    public void onAsyncTaskExecuted(ResultadoAcao resultado) {
-        if(resultado.deuCerto()){
+    public void onAsyncTaskExecuted(final ResultadoAcao resultado) {
+        if(resultado.estaValido()){
             new AlertDialog.Builder(this)
                     .setMessage("Bem vindo ao mata fome.")
                     .setTitle("Cadastro realizado!")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                            finalizarComSucesso(resultado);
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
         } else {
-            List<Mensagem> msgs = resultado.getMensagens();
-            String mensagem = "";
-
-            for (Mensagem m : msgs) {
-                mensagem = mensagem.concat("- " + m.getTexto() + "\n");
-            }
-
-            new AlertDialog.Builder(this)
-                    .setMessage(mensagem)
-                    .setTitle("Atenção!")
-                    .setPositiveButton("OK", null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            exibirMensagensDeErro(resultado.getMensagens());
         }
+    }
+
+    private void finalizarComSucesso(ResultadoAcao resultadoAcao){
+        Usuario usuario = null; // (Usuario)resultadoAcao.getData();
+
+        App.efetuarLogin(usuario);
+
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    private void exibirMensagensDeErro(List<Mensagem> mensagens){
+        String m = "";
+
+        for (Mensagem mensagem : mensagens) {
+            m = m.concat("- " + mensagem.getTexto() + "\n");
+        }
+
+        new AlertDialog.Builder(this)
+                .setMessage(m)
+                .setTitle("Atenção!")
+                .setPositiveButton("OK", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
