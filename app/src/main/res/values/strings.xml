@@ -50,5 +50,6 @@
     <string name="cadastre_se">CADASTRE-SE</string>
     <string name="entre">ENTRE</string>
     <string name="ou">OU</string>
+    <string name="url_editar_usuario">usuario/editar</string>
 
 </resources>

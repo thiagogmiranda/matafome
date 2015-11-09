@@ -1,13 +1,16 @@
 package br.com.unigranrio.matafome.aplicacao;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import java.util.List;
 import java.util.Locale;
 
 import br.com.unigranrio.matafome.R;
+import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 /**
@@ -98,5 +101,20 @@ public class App extends Application {
         editor.commit();
 
         usuarioLogado = null;
+    }
+
+    public static void exibirMensagensDeErro(Context context, List<Mensagem> mensagens){
+        String m = "";
+
+        for (Mensagem mensagem : mensagens) {
+            m = m.concat("- " + mensagem.getTexto() + "\n");
+        }
+
+        new AlertDialog.Builder(context)
+                .setMessage(m)
+                .setTitle("Atenção!")
+                .setPositiveButton("OK", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

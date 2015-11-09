@@ -68,7 +68,7 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
         }
 
         if(erros.size() > 0){
-            exibirMensagensDeErro(erros);
+            App.exibirMensagensDeErro(this, erros);
         } else {
             Usuario usuario = new Usuario();
             usuario.setNome(txtNome.getText().toString());
@@ -108,7 +108,7 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
         } else {
-            exibirMensagensDeErro(resultado.getMensagens());
+            App.exibirMensagensDeErro(this, resultado.getMensagens());
         }
     }
 
@@ -119,20 +119,5 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
 
         setResult(RESULT_OK);
         finish();
-    }
-
-    private void exibirMensagensDeErro(List<Mensagem> mensagens){
-        String m = "";
-
-        for (Mensagem mensagem : mensagens) {
-            m = m.concat("- " + mensagem.getTexto() + "\n");
-        }
-
-        new AlertDialog.Builder(this)
-                .setMessage(m)
-                .setTitle("Atenção!")
-                .setPositiveButton("OK", null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
     }
 }

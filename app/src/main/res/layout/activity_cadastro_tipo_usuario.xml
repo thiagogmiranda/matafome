@@ -32,8 +32,10 @@
             android:layout_height="0dp"
             android:text="Quero Vender um Podrão!"
             android:id="@+id/btnQueroVender"
-            android:textSize="24dp"
-            android:layout_weight="0.5" />
+            android:textSize="30dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/quero_vender"
+            android:textColor="#000" />
 
     </LinearLayout>
 

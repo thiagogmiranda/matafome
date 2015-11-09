@@ -46,30 +46,23 @@ public class CadastrarPontoVendaActivity extends AppCompatActivity implements On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cadastrar_ponto_venda, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.salvar_ponto_venda) {
-
-            if (latLng != null) {
-                Negocio negocio = new Negocio();
-                negocio.setDescricao(txtDescricao.getText().toString());
-                negocio.setNome(txtNome.getText().toString());
-                //negocio.setIdDono();
-                negocio.setLatitude(latLng.latitude);
-                negocio.setLongitude(latLng.longitude);
-            }else {
-                Toast toast = Toast.makeText(this, "Selecione uma localização", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }
+//        if (id == R.id.salvar_ponto_venda) {
+//
+//            if (latLng != null) {
+//                Negocio negocio = new Negocio();
+//                negocio.setDescricao(txtDescricao.getText().toString());
+//                negocio.setNome(txtNome.getText().toString());
+//                //negocio.setIdDono();
+//                negocio.setLatitude(latLng.latitude);
+//                negocio.setLongitude(latLng.longitude);
+//            }else {
+//                Toast toast = Toast.makeText(this, "Selecione uma localização", Toast.LENGTH_LONG);
+//                toast.show();
+//            }
+//        }
         return super.onOptionsItemSelected(item);
     }
 
