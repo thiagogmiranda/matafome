@@ -3,15 +3,11 @@ package br.com.unigranrio.matafome.aplicacao;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.webservices.CriarUsuarioAsyncTask;
 import br.com.unigranrio.matafome.aplicacao.webservices.EditarUsuarioAsyncTask;
 import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
@@ -33,14 +29,20 @@ public class CadastroTipoUsuarioActivity extends Activity implements OnAsyncTask
         estouComFome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                definirUsuarioComoConsumidor();
+                atualizarTipoUsuario("UC");
+            }
+        });
+        queroVender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                atualizarTipoUsuario("UV");
             }
         });
     }
 
-    private void definirUsuarioComoConsumidor(){
+    private void atualizarTipoUsuario(String tipo){
         Usuario usuario = App.obterUsuarioLogado();
-        usuario.setTipo("UC");
+        usuario.setTipo(tipo);
 
         try {
             EditarUsuarioAsyncTask task = new EditarUsuarioAsyncTask();
@@ -77,9 +79,21 @@ public class CadastroTipoUsuarioActivity extends Activity implements OnAsyncTask
                 case "UC":
                     abrirTelaPesquisaLanches();
                     break;
+                case "UV":
+                    abrirTelaCadastroNegocio();
+                    break;
             }
         } else {
             App.exibirMensagensDeErro(this, resultadoAcao.getMensagens());
         }
+    }
+
+    private void abrirTelaCadastroNegocio() {
+        Intent intent = new Intent();
+        intent.setClass(this, CadastrarPontoVendaActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(intent);
+        finish();
     }
 }

@@ -1,5 +1,7 @@
 package br.com.unigranrio.matafome.aplicacao.webservices;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,6 +29,12 @@ public class CriarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, Resu
             String url = App.montarUrlRest(R.string.url_criar_usuario);
 
             resultado = restTemplate.postForObject(url, params[0], ResultadoAcao.class);
+
+            if(resultado.estaValido()){
+                ObjectMapper mapper = new ObjectMapper();
+                Usuario usuario =  mapper.convertValue(resultado.getData(), Usuario.class);
+                resultado.setData(usuario);
+            }
         } catch (Exception exception) {
             List<Mensagem> erros = new ArrayList<>();
             erros.add(new Mensagem("Erro de conexão. Verifique se você está conectado à internet."));

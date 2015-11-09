@@ -3,8 +3,6 @@ package br.com.unigranrio.matafome.aplicacao;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -113,7 +111,7 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
     }
 
     private void finalizarComSucesso(ResultadoAcao resultadoAcao){
-        Usuario usuario = null; // (Usuario)resultadoAcao.getData();
+        Usuario usuario = (Usuario)resultadoAcao.getData();
 
         App.efetuarLogin(usuario);
 

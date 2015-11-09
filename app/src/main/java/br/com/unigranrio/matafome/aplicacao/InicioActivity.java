@@ -150,13 +150,13 @@ public class InicioActivity extends Activity {
         Intent intent = new Intent();
         intent.setClass(this, LoginActivity.class);
 
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, LOGIN);
     }
 
     private void abrirActivityCadastroUsuario() {
         Intent intent = new Intent();
         intent.setClass(this, CriarUsuarioActivity.class);
 
-        startActivity(intent);
+        startActivityForResult(intent, CADASTRO);
     }
 }
