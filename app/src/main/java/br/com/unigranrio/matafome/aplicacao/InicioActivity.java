@@ -98,15 +98,30 @@ public class InicioActivity extends Activity {
     }
 
     private void abrirTelaCadastroTipoUsuario(){
+        Intent intent = new Intent();
+        intent.setClass(this, CadastroTipoUsuarioActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        startActivity(intent);
+        finish();
     }
 
     private void abrirTelaEscolhaAcao(){
+        Intent intent = new Intent();
+        //intent.setClass(this, PesquisaLanchesRapidosActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        startActivity(intent);
+        finish();
     }
 
     private void abrirTelaGerenciamentoNegocio(){
+        Intent intent = new Intent();
+        //intent.setClass(this, PesquisaLanchesRapidosActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        startActivity(intent);
+        finish();
     }
 
     private void abrirTelaPesquisaLanches(){
