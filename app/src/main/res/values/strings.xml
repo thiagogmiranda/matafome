@@ -36,7 +36,7 @@
     <string name="server_url">https://matafomeserver.herokuapp.com/</string>
     <string name="url_criar_usuario">usuario/criar</string>
     <string name="url_obter_usuario_por_email">usuario/obter-por-email?email=%s</string>
-    <string name="url_obter_barracas_proximas">barraca/obter-todas-dentro-raio?raio=%1$.2f&amp;lat=%2$.10f&amp;lng=%3$.10f</string>
+    <string name="url_obter_barracas_proximas">lanches/todos-no-raio?raio=%1$.2f&amp;lat=%2$.10f&amp;lng=%3$.10f</string>
     <string name="pesquisando_lanches">Pesquisando lanches rápidos dentro de %d metros.</string>
     <string name="item_ponto_venda">Ponto Venda</string>
     <string name="url_obter_pontos_venda_usuario">barraca/obter-todas-usuario?email=%s</string>

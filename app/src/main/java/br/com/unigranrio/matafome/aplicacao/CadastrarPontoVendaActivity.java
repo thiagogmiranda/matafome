@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
 public class CadastrarPontoVendaActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
@@ -59,12 +59,12 @@ public class CadastrarPontoVendaActivity extends AppCompatActivity implements On
         if (id == R.id.salvar_ponto_venda) {
 
             if (latLng != null) {
-                Barraca barraca = new Barraca();
-                barraca.setDescricao(txtDescricao.getText().toString());
-                barraca.setNome(txtNome.getText().toString());
-                //barraca.setIdDono();
-                barraca.setLatitude(latLng.latitude);
-                barraca.setLongitude(latLng.longitude);
+                Negocio negocio = new Negocio();
+                negocio.setDescricao(txtDescricao.getText().toString());
+                negocio.setNome(txtNome.getText().toString());
+                //negocio.setIdDono();
+                negocio.setLatitude(latLng.latitude);
+                negocio.setLongitude(latLng.longitude);
             }else {
                 Toast toast = Toast.makeText(this, "Selecione uma localização", Toast.LENGTH_LONG);
                 toast.show();

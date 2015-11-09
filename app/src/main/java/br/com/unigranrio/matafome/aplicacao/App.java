@@ -15,6 +15,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Usuario;
  */
 public class App extends Application {
     private static Context currentContext;
+    private static Usuario usuarioLogado;
 
     private static final String USUARIO_LOGADO = "usuarioEstaLogado";
     private static final String ID_USUARIO = "idUsuario";
@@ -56,23 +57,46 @@ public class App extends Application {
         //editor.putString(DATA_CADASTRO_USUARIO, usuario.getDataCadastro().toString());
 
         editor.commit();
+
+        usuarioLogado = usuario;
     }
 
     public static Usuario obterUsuarioLogado(){
         Usuario usuario = null;
 
-        SharedPreferences prefs = currentContext.getSharedPreferences("matafome", 0);
-        boolean usuarioLogado = prefs.getBoolean(USUARIO_LOGADO, false);
+        SharedPreferences prefs = currentContext.getSharedPreferences("mata_fome", 0);
+        boolean temUsuarioLogado = prefs.getBoolean(USUARIO_LOGADO, false);
 
-        if(usuarioLogado){
-            usuario = new Usuario();
-            usuario.setId(prefs.getLong(ID_USUARIO, 0));
-            usuario.setNome(prefs.getString(NOME_USUARIO, null));
-            usuario.setEmail(prefs.getString(EMAIL_USUARIO, null));
-            usuario.setSenha(prefs.getString(SENHA_USUARIO, null));
-            usuario.setTipo(prefs.getString(TIPO_USUARIO, null));
+        if(temUsuarioLogado){
+            usuario = usuarioLogado;
+
+            if(usuario == null) {
+                usuario = new Usuario();
+                usuario.setId(prefs.getLong(ID_USUARIO, 0));
+                usuario.setNome(prefs.getString(NOME_USUARIO, null));
+                usuario.setEmail(prefs.getString(EMAIL_USUARIO, null));
+                usuario.setSenha(prefs.getString(SENHA_USUARIO, null));
+                usuario.setTipo(prefs.getString(TIPO_USUARIO, null));
+            }
         }
 
         return usuario;
+    }
+
+    public static void deslogarUsuario() {
+        SharedPreferences prefs = currentContext.getSharedPreferences("mata_fome", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putBoolean(USUARIO_LOGADO, false);
+        editor.remove(ID_USUARIO);
+        editor.remove(NOME_USUARIO);
+        editor.remove(EMAIL_USUARIO);
+        editor.remove(SENHA_USUARIO);
+        editor.remove(TIPO_USUARIO);
+        //editor.putString(DATA_CADASTRO_USUARIO, usuario.getDataCadastro().toString());
+
+        editor.commit();
+
+        usuarioLogado = null;
     }
 }

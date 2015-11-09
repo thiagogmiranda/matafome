@@ -82,8 +82,34 @@ public class InicioActivity extends Activity {
     }
 
     private void iniciarActivityPrincipal() {
-        //Este método deve verifical qual o tipo de usuário está logado para decidir para qual tela redirecionar
+        Usuario usuario = App.obterUsuarioLogado();
+        String tipo = usuario.getTipo();
 
+        switch (tipo){
+            case "UC": abrirTelaPesquisaLanches();
+                break;
+            case "UV": abrirTelaGerenciamentoNegocio();
+                break;
+            case "UX": abrirTelaEscolhaAcao();
+                break;
+            case "UN": abrirTelaCadastroTipoUsuario();
+                break;
+        }
+    }
+
+    private void abrirTelaCadastroTipoUsuario(){
+
+    }
+
+    private void abrirTelaEscolhaAcao(){
+
+    }
+
+    private void abrirTelaGerenciamentoNegocio(){
+
+    }
+
+    private void abrirTelaPesquisaLanches(){
         Intent intent = new Intent();
         intent.setClass(this, PesquisaLanchesRapidosActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

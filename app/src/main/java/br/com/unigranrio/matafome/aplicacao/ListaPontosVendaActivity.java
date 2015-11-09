@@ -16,11 +16,12 @@ import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.adapters.PontoVendaAdapter;
 import br.com.unigranrio.matafome.aplicacao.webservices.ObterBarracasUsuarioAsyncTask;
 import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
+import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
-public class ListaPontosVendaActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<List<Barraca>> {
+public class ListaPontosVendaActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<List<Negocio>> {
 
-    private List<Barraca> pontosVendaList;
+    private List<Negocio> pontosVendaList;
     private PontoVendaAdapter pontoVendaAdapter;
     private ListView lstPontosVenda;
 
@@ -72,14 +73,13 @@ public class ListaPontosVendaActivity extends AppCompatActivity implements OnAsy
     }
 
     public void atualizarLista(){
-        SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
-        String email = prefs.getString(LoginActivity.EMAIL_USUARIO_LOGADO, "");
+        Usuario usuario = App.obterUsuarioLogado();
 
-        obterBarracasUsuarioAsyncTask.execute(email);
+        obterBarracasUsuarioAsyncTask.execute(usuario.getEmail());
     }
 
     @Override
-    public void onAsyncTaskExecuted(List<Barraca> pontosVenda) {
+    public void onAsyncTaskExecuted(List<Negocio> pontosVenda) {
         pontosVendaList.clear();
         pontosVendaList.addAll(pontosVenda);
         pontoVendaAdapter.notifyDataSetChanged();

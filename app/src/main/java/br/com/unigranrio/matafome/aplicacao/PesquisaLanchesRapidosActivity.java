@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -32,12 +31,12 @@ import java.util.List;
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.webservices.ObterBarracasDentroDoRaioAsyncTask;
 import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
 public class PesquisaLanchesRapidosActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener,
-        OnAsyncTaskExecutedListener<List<Barraca>> {
+        OnAsyncTaskExecutedListener<List<Negocio>> {
     private GoogleMap googleMap;
     private Location lastLocation;
 
@@ -107,13 +106,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
 
             startActivity(intent);
         } else if (id == R.id.sair) {
-            SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-
-            editor.putBoolean(LoginActivity.IS_USUARIO_LOGADO, false);
-            editor.remove(LoginActivity.EMAIL_USUARIO_LOGADO);
-
-            editor.commit();
+            App.deslogarUsuario();
 
             Intent intent = new Intent();
             intent.setClass(this, InicioActivity.class);
@@ -222,14 +215,14 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAsyncTaskExecuted(List<Barraca> barracas) {
-        for (Barraca barraca : barracas) {
-            double distancia = distancia(lastLocation.getLatitude(), lastLocation.getLongitude(), barraca.getLatitude(), barraca.getLongitude());
+    public void onAsyncTaskExecuted(List<Negocio> negocios) {
+        for (Negocio negocio : negocios) {
+            double distancia = distancia(lastLocation.getLatitude(), lastLocation.getLongitude(), negocio.getLatitude(), negocio.getLongitude());
 
             googleMap.addMarker(new MarkerOptions()
-                    .title(barraca.getNome())
+                    .title(negocio.getNome())
                     .snippet(String.format("%.2f metros", distancia))
-                    .position(new LatLng(barraca.getLatitude(), barraca.getLongitude())));
+                    .position(new LatLng(negocio.getLatitude(), negocio.getLongitude())));
         }
     }
 
