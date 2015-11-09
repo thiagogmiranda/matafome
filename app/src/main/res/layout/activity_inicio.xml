@@ -11,8 +11,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_vertical"
-        android:layout_marginTop="30dp">
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="20dp">
 
         <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:keepScreenOn="true" android:textColor="#33b5e5"
@@ -36,7 +36,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:id="@+id/acoes">
 
         <Button android:id="@+id/btnEntrar"
             android:layout_width="match_parent" android:layout_height="wrap_content"

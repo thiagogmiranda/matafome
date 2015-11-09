@@ -2,10 +2,11 @@ package br.com.unigranrio.matafome.aplicacao;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
@@ -14,8 +15,12 @@ public class InicioActivity extends Activity {
     private Button btnEntrar;
     private Button btnCadastrarUsuario;
 
+    private LinearLayout acoes;
+
     private static final int LOGIN = 1;
     private static final int CADASTRO = 2;
+
+    private static final int LOAD_TIMEOUT = 3000; // 3 segundos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,33 +31,41 @@ public class InicioActivity extends Activity {
         btnEntrar = (Button) findViewById(R.id.btnEntrar);
         btnCadastrarUsuario = (Button) findViewById(R.id.btnCadastrarUsuario);
 
-        btnEntrar.setVisibility(View.INVISIBLE);
-        btnCadastrarUsuario.setVisibility(View.INVISIBLE);
+        acoes = (LinearLayout) findViewById(R.id.acoes);
 
-        Usuario usuario = App.obterUsuarioLogado();
+        iniciarApp();
+    }
 
-        if (usuario != null) {
-            btnEntrar.setVisibility(View.INVISIBLE);
-            btnCadastrarUsuario.setVisibility(View.INVISIBLE);
+    private void iniciarApp() {
+        acoes.setVisibility(View.INVISIBLE);
 
-            iniciarActivityPrincipal();
-        } else {
-            btnEntrar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    abrirActivityLogin();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Usuario usuario = App.obterUsuarioLogado();
+
+                if (usuario != null) {
+                    acoes.setVisibility(View.INVISIBLE);
+
+                    iniciarActivityPrincipal();
+                } else {
+                    btnEntrar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            abrirActivityLogin();
+                        }
+                    });
+                    btnCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            abrirActivityCadastroUsuario();
+                        }
+                    });
+
+                    acoes.setVisibility(View.VISIBLE);
                 }
-            });
-            btnCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    abrirActivityCadastroUsuario();
-                }
-            });
-
-            btnEntrar.setVisibility(View.VISIBLE);
-            btnCadastrarUsuario.setVisibility(View.VISIBLE);
-        }
+            }
+        }, LOAD_TIMEOUT);
     }
 
     @Override
@@ -71,13 +84,13 @@ public class InicioActivity extends Activity {
 
     private void tratarResultadoCadastro(int resultCode) {
         if (resultCode == RESULT_OK) {
-            abrirActivityLogin();
+            iniciarApp();
         }
     }
 
     private void tratarResultadoLogin(int resultCode) {
         if (resultCode == RESULT_OK) {
-            iniciarActivityPrincipal();
+            iniciarApp();
         }
     }
 
