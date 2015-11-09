@@ -3,15 +3,12 @@ package br.com.unigranrio.matafome.aplicacao;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -85,38 +82,6 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_buscar_barraca, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.listar_pontos_venda) {
-            Intent intent = new Intent();
-            intent.setClass(this, ListaPontosVendaActivity.class);
-
-            startActivity(intent);
-        } else if (id == R.id.sair) {
-            App.deslogarUsuario();
-
-            Intent intent = new Intent();
-            intent.setClass(this, InicioActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            startActivity(intent);
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
