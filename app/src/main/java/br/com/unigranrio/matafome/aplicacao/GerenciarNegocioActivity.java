@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -121,6 +122,8 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
 
         map.addMarker(new MarkerOptions()
                 .position(latLng));
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18.2f));
     }
 
     private void abrirTelaCadastroNegocio() {
