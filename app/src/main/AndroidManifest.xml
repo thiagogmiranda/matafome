@@ -51,11 +51,14 @@
             android:name=".aplicacao.PesquisaLanchesRapidosActivity"
             android:label="@string/title_activity_buscar_barraca" >
         </activity>
-        <activity android:name=".aplicacao.CadastrarPontoVendaActivity" >
+        <activity android:name=".aplicacao.CadastrarNegocioActivity" >
         </activity>
-        <activity android:name=".aplicacao.CadastroTipoUsuarioActivity"
+        <activity
+            android:name=".aplicacao.CadastroTipoUsuarioActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity android:name=".aplicacao.GerenciarNegocioActivity" >
         </activity>
     </application>
 

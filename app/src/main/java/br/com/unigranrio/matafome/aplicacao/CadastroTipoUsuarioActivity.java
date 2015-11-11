@@ -90,7 +90,7 @@ public class CadastroTipoUsuarioActivity extends Activity implements OnAsyncTask
 
     private void abrirTelaCadastroNegocio() {
         Intent intent = new Intent();
-        intent.setClass(this, CadastrarPontoVendaActivity.class);
+        intent.setClass(this, CadastrarNegocioActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(intent);

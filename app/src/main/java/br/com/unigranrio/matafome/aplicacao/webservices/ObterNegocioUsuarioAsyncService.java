@@ -16,17 +16,17 @@ import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 /**
  * Created by WebFis33 on 15/10/2015.
  */
-public class ObterNegocioUsuarioAsyncService extends AsyncTaskAbstrata<String, Void, ResultadoAcao<Negocio>> {
+public class ObterNegocioUsuarioAsyncService extends AsyncTaskAbstrata<Long, Void, ResultadoAcao<Negocio>> {
     @Override
-    protected ResultadoAcao<Negocio> doInBackground(String... params) {
+    protected ResultadoAcao<Negocio> doInBackground(Long... params) {
         ResultadoAcao<Negocio> resultado = new ResultadoAcao<>();
 
-        String email = params[0];
+        long id = params[0];
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        String url = App.montarUrlRest(R.string.url_obter_pontos_venda_usuario, email);
+        String url = App.montarUrlRest(R.string.url_obter_negocio_usuario, id);
 
         try {
             Negocio negocio = restTemplate.getForObject(url, Negocio.class);

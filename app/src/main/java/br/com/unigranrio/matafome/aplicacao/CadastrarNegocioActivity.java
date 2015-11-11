@@ -25,7 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
-public class CadastrarPontoVendaActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class CadastrarNegocioActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private GoogleMap googleMap;
     private LatLng latLng;
