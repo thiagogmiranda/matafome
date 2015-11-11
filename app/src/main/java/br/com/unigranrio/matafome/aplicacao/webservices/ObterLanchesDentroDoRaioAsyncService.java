@@ -13,7 +13,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 /**
  * Created by WebFis33 on 15/09/2015.
  */
-public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTaskAbstrata<Double, Void, List<Negocio>> {
+public class ObterLanchesDentroDoRaioAsyncService extends AsyncTaskAbstrata<Double, Void, List<Negocio>> {
     @Override
     protected List<Negocio> doInBackground(Double... params) {
         double raio = params[0];

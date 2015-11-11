@@ -13,7 +13,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 /**
  * Created by WebFis33 on 15/10/2015.
  */
-public class ObterBarracasUsuarioAsyncTask extends AsyncTaskAbstrata<String, Void, List<Negocio>> {
+public class ObterNegocioUsuarioAsyncService extends AsyncTaskAbstrata<String, Void, List<Negocio>> {
     @Override
     protected List<Negocio> doInBackground(String... params) {
         String email = params[0];

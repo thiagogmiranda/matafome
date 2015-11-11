@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.webservices.ObterBarracasDentroDoRaioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.webservices.ObterLanchesDentroDoRaioAsyncService;
 import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
 import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
@@ -167,7 +167,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
             googleMap.addCircle(circleOptions);
 
             try {
-                ObterBarracasDentroDoRaioAsyncTask task = new ObterBarracasDentroDoRaioAsyncTask();
+                ObterLanchesDentroDoRaioAsyncService task = new ObterLanchesDentroDoRaioAsyncService();
 
                 String mensagem = getResources().getString(R.string.pesquisando_lanches);
 
