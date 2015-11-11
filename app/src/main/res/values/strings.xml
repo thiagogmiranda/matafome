@@ -51,5 +51,6 @@
     <string name="entre">ENTRE</string>
     <string name="ou">OU</string>
     <string name="url_editar_usuario">usuario/editar</string>
+    <string name="url_cadastrar_negocio">negocio/cadastrar</string>
 
 </resources>

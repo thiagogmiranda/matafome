@@ -40,6 +40,8 @@ public class EditarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, Res
             erros.add(new Mensagem("Erro de conexão. Verifique se você está conectado à internet."));
 
             resultado.adicionarMensagens(erros);
+
+            exception.printStackTrace();
         }
 
         return resultado;

@@ -130,7 +130,7 @@ public class InicioActivity extends Activity {
 
     private void abrirTelaGerenciamentoNegocio(){
         Intent intent = new Intent();
-        //intent.setClass(this, PesquisaLanchesRapidosActivity.class);
+        intent.setClass(this, GerenciarNegocioActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(intent);

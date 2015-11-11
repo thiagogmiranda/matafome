@@ -1,9 +1,9 @@
 package br.com.unigranrio.matafome.aplicacao;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -21,9 +22,7 @@ import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
-public class GerenciarNegocioActivity extends Activity implements OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>>, OnMapReadyCallback {
-
-    private static final int CADASTRO_NEGOCIO = 1;
+public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>>, OnMapReadyCallback {
 
     private GoogleMap map;
     private TextView txtNome;
@@ -36,6 +35,10 @@ public class GerenciarNegocioActivity extends Activity implements OnAsyncTaskExe
 
         txtNome = (TextView) findViewById(R.id.txtNome);
         txtDescricao = (TextView) findViewById(R.id.txtDescricao);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -69,17 +72,6 @@ public class GerenciarNegocioActivity extends Activity implements OnAsyncTaskExe
             }
         } else {
             App.exibirMensagensDeErro(this, resultado.getMensagens());
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case CADASTRO_NEGOCIO:
-                tratarResultadoCadastro(resultCode);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -134,13 +126,9 @@ public class GerenciarNegocioActivity extends Activity implements OnAsyncTaskExe
     private void abrirTelaCadastroNegocio() {
         Intent intent = new Intent();
         intent.setClass(this, CadastrarNegocioActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        startActivityForResult(intent, CADASTRO_NEGOCIO);
-    }
-
-    private void tratarResultadoCadastro(int resultCode) {
-        if(resultCode == RESULT_OK){
-            carregarDadosNegocio();
-        }
+        startActivity(intent);
+        finish();
     }
 }
