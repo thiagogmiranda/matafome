@@ -116,7 +116,16 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
 
     private void preencherDadosNegocio(Negocio negocio) {
         txtNome.setText(negocio.getNome());
-        txtDescricao.setText(negocio.getDescricao());
+
+        String descricao = negocio.getDescricao();
+
+        if(null == descricao || "".equals(descricao.trim())){
+            descricao = "Sem descrição.";
+        } else if (descricao.length() > 100){
+            descricao = descricao.substring(0, 100);
+        }
+
+        txtDescricao.setText(descricao);
 
         LatLng latLng = new LatLng(negocio.getLatitude(), negocio.getLongitude());
 

@@ -59,7 +59,8 @@
             android:label="Que tipo de usuário você é?"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".aplicacao.GerenciarNegocioActivity" >
+        <activity android:name=".aplicacao.GerenciarNegocioActivity"
+            android:label="Gerenciar Negócio">
         </activity>
     </application>
 
