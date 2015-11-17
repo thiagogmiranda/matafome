@@ -51,16 +51,21 @@
             android:name=".aplicacao.PesquisaLanchesRapidosActivity"
             android:label="@string/title_activity_buscar_barraca" >
         </activity>
-        <activity android:name=".aplicacao.CadastrarNegocioActivity"
-            android:label="Cadastre o seu Negócio!">
+        <activity
+            android:name=".aplicacao.CadastrarNegocioActivity"
+            android:label="Cadastre o seu Negócio!" >
         </activity>
         <activity
             android:name=".aplicacao.CadastroTipoUsuarioActivity"
             android:label="Que tipo de usuário você é?"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
-        <activity android:name=".aplicacao.GerenciarNegocioActivity"
-            android:label="Gerenciar Negócio">
+        <activity
+            android:name=".aplicacao.GerenciarNegocioActivity"
+            android:label="Gerenciar Negócio" >
+        </activity>
+        <activity android:name=".aplicacao.ListaAvaliacoesNegocioActivity"
+            android:label="Avaliações">
         </activity>
     </application>
 
