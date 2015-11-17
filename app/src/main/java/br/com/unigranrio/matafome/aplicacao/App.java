@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 /**
@@ -19,6 +20,7 @@ import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 public class App extends Application {
     private static Context currentContext;
     private static Usuario usuarioLogado;
+    private static Negocio negocioUsuarioLogado;
 
     private static final String USUARIO_LOGADO = "usuarioEstaLogado";
     private static final String ID_USUARIO = "idUsuario";
@@ -27,6 +29,11 @@ public class App extends Application {
     private static final String SENHA_USUARIO = "senhaUsuario";
     private static final String TIPO_USUARIO = "tipoUsuario";
     private static final String DATA_CADASTRO_USUARIO = "dataCadastroUsuario";
+    private static final String ID_NEGOCIO = "idNegocio";
+    private static final String NOME_NEGOCIO = "nomeNegocio";
+    private static final String DESCRICAO_NEGOCIO = "descricaoNegocio";
+    private static final String LATITUDE_NEGOCIO = "latitudeNegocio";
+    private static final String LONGITUDE_NEGOCIO = "longitudeNegocio";
 
     public void onCreate() {
         super.onCreate();
@@ -80,6 +87,8 @@ public class App extends Application {
                 usuario.setEmail(prefs.getString(EMAIL_USUARIO, null));
                 usuario.setSenha(prefs.getString(SENHA_USUARIO, null));
                 usuario.setTipo(prefs.getString(TIPO_USUARIO, null));
+
+                usuarioLogado = usuario;
             }
         }
 

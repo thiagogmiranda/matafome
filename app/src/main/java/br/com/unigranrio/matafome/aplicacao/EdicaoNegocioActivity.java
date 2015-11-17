@@ -1,15 +1,12 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,7 +15,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.wallet.wobs.UriData;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.webservices.ObterNegocioUsuarioAsyncService;
@@ -27,38 +23,19 @@ import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
-public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>>, OnMapReadyCallback {
+public class EdicaoNegocioActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>>, OnMapReadyCallback {
 
     private GoogleMap map;
     private TextView txtNome;
-    private TextView txtDescricao;
-
-    private Button btnVerAvaliacoes;
-    private Button btnEditarNegocio;
+    private EditText txtDescricao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gerenciar_negocio);
+        setContentView(R.layout.activity_edicao_negocio);
 
         txtNome = (TextView) findViewById(R.id.txtNome);
-        txtDescricao = (TextView) findViewById(R.id.txtDescricao);
-        btnEditarNegocio = (Button) findViewById(R.id.btnEditar);
-        btnVerAvaliacoes = (Button) findViewById(R.id.btnAvaliacoes);
-
-        btnVerAvaliacoes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iniciarActivityListaAvaliacoesNegocio();
-            }
-        });
-
-        btnEditarNegocio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iniciarActivityEdicaoNegocio();
-            }
-        });
+        txtDescricao = (EditText) findViewById(R.id.txtDescricao);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -68,7 +45,7 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_gerenciar_negocio, menu);
+        inflater.inflate(R.menu.menu_cadastrar_negocio, menu);
         return true;
     }
 
@@ -76,8 +53,8 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.logout:
-                fazerLogout();
+            case R.id.salvar:
+                salvarEdicao();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -89,11 +66,7 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
         if(resultado.estaValido()){
             Negocio negocio = (Negocio)resultado.getData();
 
-            if(negocio != null){
-                preencherDadosNegocio(negocio);
-            } else {
-                abrirTelaCadastroNegocio();
-            }
+            preencherDadosNegocio(negocio);
         } else {
             App.exibirMensagensDeErro(this, resultado.getMensagens());
         }
@@ -108,17 +81,6 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
         carregarDadosNegocio();
     }
 
-    private void fazerLogout() {
-        App.deslogarUsuario();
-
-        Intent intent = new Intent();
-        intent.setClass(this, InicioActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        startActivity(intent);
-        finish();
-    }
-
     private void carregarDadosNegocio() {
         try {
             Usuario usuarioLogado = App.obterUsuarioLogado();
@@ -127,7 +89,7 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
             service.setOnExecutedListener(this);
 
             ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Carregando informações ...");
+            progressDialog.setMessage("Carregando dados para edição ...");
 
             service.setProgressDialog(progressDialog);
 
@@ -140,46 +102,15 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
     private void preencherDadosNegocio(Negocio negocio) {
         txtNome.setText(negocio.getNome());
 
-        String descricao = negocio.getDescricao();
-
-        if(null == descricao || "".equals(descricao.trim())){
-            descricao = "Sem descrição.";
-        } else if (descricao.length() > 100){
-            descricao = descricao.substring(0, 100);
-        }
-
-        txtDescricao.setText(descricao);
+        txtDescricao.setText(negocio.getDescricao());
 
         LatLng latLng = new LatLng(negocio.getLatitude(), negocio.getLongitude());
 
-        map.addMarker(new MarkerOptions()
-                .position(latLng));
-
+        map.addMarker(new MarkerOptions().position(latLng));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18.2f));
     }
 
-    private void abrirTelaCadastroNegocio() {
-        Intent intent = new Intent();
-        intent.setClass(this, CadastrarNegocioActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    private void salvarEdicao() {
 
-        startActivity(intent);
-        finish();
-    }
-
-    private void iniciarActivityListaAvaliacoesNegocio() {
-        Intent intent = new Intent();
-        intent.setClass(this, ListaAvaliacoesNegocioActivity.class);
-
-        startActivity(intent);
-    }
-
-    private void iniciarActivityEdicaoNegocio() {
-        Intent intent = new Intent();
-        intent.setClass(this, EdicaoNegocioActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        startActivity(intent);
-        finish();
     }
 }
