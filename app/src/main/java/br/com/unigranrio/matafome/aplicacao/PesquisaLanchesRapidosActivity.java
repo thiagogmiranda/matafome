@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
 
     private Marker markerSelecao;
     private LinearLayout acoesContainer;
+    private Button btnVerMaisSobre;
 
     private TextView lblRaioBusca;
     private SeekBar raioBuscaSeekBar;
@@ -55,6 +57,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
         lblRaioBusca = (TextView) findViewById(R.id.lblRaioBusca);
         raioBuscaSeekBar = (SeekBar) findViewById(R.id.raioBuscaSeekBar);
         acoesContainer = (LinearLayout) findViewById(R.id.acoesContainer);
+        btnVerMaisSobre = (Button) findViewById(R.id.btnDetalhesNegocio);
 
         acoesContainer.setVisibility(View.INVISIBLE);
 
@@ -188,6 +191,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
     public boolean onMarkerClick(Marker marker) {
         this.markerSelecao = marker;
 
+        btnVerMaisSobre.setText("Ver mais sobre " + marker.getTitle());
         acoesContainer.setVisibility(View.VISIBLE);
 
         return false;
