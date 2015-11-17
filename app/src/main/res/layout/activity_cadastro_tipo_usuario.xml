@@ -15,27 +15,29 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:text="Estou com FOME!"
+            android:text="SOU UM FAMINTO"
             android:id="@+id/btnQueroComer"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginStart="40dp"
-            android:textSize="30dp"
+            android:textSize="60dp"
             android:layout_weight="0.5"
             android:layout_margin="0dp"
             android:background="@drawable/quero_comer"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000"
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:text="Quero Vender um Podrão!"
+            android:text="SOU MATADOR DE FOME"
             android:id="@+id/btnQueroVender"
-            android:textSize="30dp"
+            android:textSize="50dp"
             android:layout_weight="0.5"
             android:background="@drawable/quero_vender"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
