@@ -53,5 +53,6 @@
     <string name="url_editar_usuario">usuario/editar</string>
     <string name="url_cadastrar_negocio">negocio/cadastrar</string>
     <string name="url_obter_avaliacoes_negocio">avaliacao/obter-todas?idVendedor=%d</string>
+    <string name="url_editar_negocio">negocio/editar</string>
 
 </resources>

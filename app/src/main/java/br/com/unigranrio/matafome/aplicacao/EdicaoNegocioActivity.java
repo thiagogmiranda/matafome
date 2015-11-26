@@ -23,11 +23,17 @@ import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
-public class EdicaoNegocioActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>>, OnMapReadyCallback {
+public class EdicaoNegocioActivity
+        extends AppCompatActivity
+        implements OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>>, OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private GoogleMap map;
     private TextView txtNome;
     private EditText txtDescricao;
+
+    private Negocio negocio;
+
+    private EditarNegocioSalvarMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,8 @@ public class EdicaoNegocioActivity extends AppCompatActivity implements OnAsyncT
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mediator = new EditarNegocioSalvarMediator(this);
     }
 
     @Override
@@ -77,6 +85,7 @@ public class EdicaoNegocioActivity extends AppCompatActivity implements OnAsyncT
         map = googleMap;
 
         map.setMyLocationEnabled(true);
+        map.setOnMapClickListener(this);
 
         carregarDadosNegocio();
     }
@@ -100,6 +109,8 @@ public class EdicaoNegocioActivity extends AppCompatActivity implements OnAsyncT
     }
 
     private void preencherDadosNegocio(Negocio negocio) {
+        this.negocio = negocio;
+
         txtNome.setText(negocio.getNome());
 
         txtDescricao.setText(negocio.getDescricao());
@@ -111,6 +122,23 @@ public class EdicaoNegocioActivity extends AppCompatActivity implements OnAsyncT
     }
 
     private void salvarEdicao() {
+        negocio.setDescricao(txtDescricao.getText().toString());
 
+        mediator.salvar(negocio);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        map.clear();
+
+        negocio.setLatitude(latLng.latitude);
+        negocio.setLongitude(latLng.longitude);
+
+        map.addMarker(new MarkerOptions()
+                .position(latLng));
+    }
+
+    public void finalizar(){
+        finish();
     }
 }
