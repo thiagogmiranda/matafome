@@ -205,7 +205,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
             distance = location.distanceTo(lastLocation);
         }
 
-        if (distance >= 15) {
+        if (distance >= (raioBuscaSeekBar.getProgress() / 2)) {
             lastLocation = location;
 
             desenharLocalizador();
