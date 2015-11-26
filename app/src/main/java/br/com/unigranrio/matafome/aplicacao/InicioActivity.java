@@ -20,7 +20,7 @@ public class InicioActivity extends Activity {
     private static final int LOGIN = 1;
     private static final int CADASTRO = 2;
 
-    private static final int LOAD_TIMEOUT = 3000; // 3 segundos
+    private static final int LOAD_TIMEOUT = 2000; // 2 segundos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

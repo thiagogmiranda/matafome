@@ -1,6 +1,7 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -133,6 +134,11 @@ public class CadastrarNegocioActivity extends AppCompatActivity implements OnMap
 
             CadastrarNegocioAsyncService service = new CadastrarNegocioAsyncService();
             service.setOnExecutedListener(this);
+
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Salvando informações ...");
+
+            service.setProgressDialog(progressDialog);
 
             service.execute(negocio);
         } catch (Exception e){

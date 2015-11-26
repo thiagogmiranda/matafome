@@ -77,7 +77,6 @@ public class CriarUsuarioActivity extends AppCompatActivity implements OnAsyncTa
                 CriarUsuarioAsyncTask task = new CriarUsuarioAsyncTask();
 
                 ProgressDialog progressDialog = new ProgressDialog(this);
-                progressDialog.setTitle("Um minuto..");
                 progressDialog.setMessage("Criando Usuário...");
 
                 task.setProgressDialog(progressDialog);
