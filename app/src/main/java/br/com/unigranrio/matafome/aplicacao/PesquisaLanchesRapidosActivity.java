@@ -86,9 +86,23 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
             }
         });
 
+        btnVerMaisSobre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirTelaDetalhesNegocio();
+            }
+        });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void abrirTelaDetalhesNegocio() {
+        Intent intent = new Intent();
+        intent.setClass(this, DetalhesNegocioActivity.class);
+
+        startActivity(intent);
     }
 
     @Override
