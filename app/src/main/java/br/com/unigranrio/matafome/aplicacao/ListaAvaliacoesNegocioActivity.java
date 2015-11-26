@@ -1,5 +1,6 @@
 package br.com.unigranrio.matafome.aplicacao;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -9,9 +10,14 @@ import java.util.List;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.adapters.AvaliacaoListViewAdapter;
+import br.com.unigranrio.matafome.aplicacao.webservices.ObterAvaliacoesAsyncService;
+import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
+import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
+import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Avaliacao;
+import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
-public class ListaAvaliacoesNegocioActivity extends AppCompatActivity {
+public class ListaAvaliacoesNegocioActivity extends AppCompatActivity implements OnAsyncTaskExecutedListener<ResultadoAcao<List<Avaliacao>>> {
 
     private AvaliacaoListViewAdapter adapter;
     private List<Avaliacao> avaliacoes;
@@ -26,37 +32,48 @@ public class ListaAvaliacoesNegocioActivity extends AppCompatActivity {
 
         avaliacoes = new ArrayList<>();
 
-        Avaliacao a = new Avaliacao();
-        a.setNota(5);
-        a.setComentario("Ótimo atendimento e o lanche super gostoso, recomento a todos que passarem por aqui");
-        a.setUsuario(App.obterUsuarioLogado());
-
-        Avaliacao b = new Avaliacao();
-        b.setNota(5);
-        b.setComentario("Ótimo lanche, super saboroso, recomento a todos que passarem por aqui");
-        b.setUsuario(App.obterUsuarioLogado());
-
-        Avaliacao c = new Avaliacao();
-        c.setNota(5);
-        c.setComentario("Ótimo atendimento, recomento a todos que passarem por aqui");
-        c.setUsuario(App.obterUsuarioLogado());
-
-        avaliacoes.add(a);
-        avaliacoes.add(b);
-        avaliacoes.add(c);
-
         adapter = new AvaliacaoListViewAdapter(this, R.layout.item_lista_avaliacoes, avaliacoes);
-
         lstAvaliacoes.setAdapter(adapter);
 
-        //Bundle extras = getIntent().getExtras();
-        //double lat = extras.getDouble("lat");
-        //double lng = extras.getDouble("lng");
-
-        //carregarAvaliacoes(lat, lng);
+        carregarAvaliacoes();
     }
 
-    private void carregarAvaliacoes(double lat, double lng) {
+    private void carregarAvaliacoes() {
+        try {
+            Usuario usuarioLogado = App.obterUsuarioLogado();
 
+            ObterAvaliacoesAsyncService service = new ObterAvaliacoesAsyncService();
+            service.setOnExecutedListener(this);
+
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Carregando avaliações ...");
+
+            service.setProgressDialog(progressDialog);
+
+            service.execute(usuarioLogado.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onAsyncTaskExecuted(ResultadoAcao<List<Avaliacao>> resultadoAcao) {
+        if(resultadoAcao.estaValido()){
+            List<Avaliacao> avaliacoes = (List<Avaliacao>)resultadoAcao.getData();
+
+            if(avaliacoes.size() == 0){
+                List<Mensagem> mensagems = new ArrayList<>();
+                mensagems.add(new Mensagem("Ainda não avaliaram o seu negócio"));
+
+                resultadoAcao.adicionarMensagens(mensagems);
+
+                App.exibirMensagensDeErro(this, resultadoAcao.getMensagens());
+            } else {
+                this.avaliacoes = avaliacoes;
+                this.adapter.notifyDataSetChanged();
+            }
+        } else {
+            App.exibirMensagensDeErro(this, resultadoAcao.getMensagens());
+        }
     }
 }

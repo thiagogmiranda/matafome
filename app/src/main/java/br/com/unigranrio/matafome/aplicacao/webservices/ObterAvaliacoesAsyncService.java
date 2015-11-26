@@ -28,20 +28,14 @@ public class ObterAvaliacoesAsyncService extends AsyncTaskAbstrata<Long, Void, R
 
         String url = App.montarUrlRest(R.string.url_obter_avaliacoes_negocio, id);
 
-        List<Mensagem> erros = new ArrayList<>();
-
         try {
             Avaliacao[] avaliacao = restTemplate.getForObject(url, Avaliacao[].class);
             resultado.setData(Arrays.asList(avaliacao));
-
-            if(avaliacao.length == 0){
-                erros.add(new Mensagem("Ainda não avaliaram o seu negócio"));
-            }
         } catch (Exception e){
+            List<Mensagem> erros = new ArrayList<>();
             erros.add(new Mensagem("Erro ao obter dados, verifique sua conexão com a internet"));
+            resultado.adicionarMensagens(erros);
         }
-
-        resultado.adicionarMensagens(erros);
 
         return resultado;
     }
