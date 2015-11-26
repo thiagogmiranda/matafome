@@ -54,5 +54,6 @@
     <string name="url_cadastrar_negocio">negocio/cadastrar</string>
     <string name="url_obter_avaliacoes_negocio">avaliacao/obter-todas?idVendedor=%d</string>
     <string name="url_editar_negocio">negocio/editar</string>
+    <string name="url_obter_negocio_localizacao">negocio/obter-por-localizacao?lat=%1$.10f&amp;lng=%2$.10f</string>
 
 </resources>
