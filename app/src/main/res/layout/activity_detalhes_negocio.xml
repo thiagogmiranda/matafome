@@ -16,9 +16,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/infoNegocio"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:id="@+id/infoNegocio">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -34,6 +33,12 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Lorem ipsum doler Lorem ipsum doler Lorem ipsum doler Lorem ipsum doler Lorem ipsum doler Lorem ipsum doler Lorem ipsum doler  ..."
                 android:id="@+id/txtDescricao" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver Avaliações"
+                android:id="@+id/btnVerAvaliacoes" />
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Enviar avaliação"
-                    android:id="@+id/button2" />
+                    android:id="@+id/btnAvaliar" />
             </LinearLayout>
 
         </LinearLayout>

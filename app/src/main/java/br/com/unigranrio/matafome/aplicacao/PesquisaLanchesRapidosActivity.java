@@ -28,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
@@ -49,10 +51,14 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
     private TextView lblRaioBusca;
     private SeekBar raioBuscaSeekBar;
 
+    private Dictionary<String, Negocio> cache;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_barraca);
+
+        cache = new Hashtable<>();
 
         lblRaioBusca = (TextView) findViewById(R.id.lblRaioBusca);
         raioBuscaSeekBar = (SeekBar) findViewById(R.id.raioBuscaSeekBar);
@@ -101,6 +107,12 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
     private void abrirTelaDetalhesNegocio() {
         Intent intent = new Intent();
         intent.setClass(this, DetalhesNegocioActivity.class);
+
+        String nome = markerSelecao.getTitle();
+
+        Negocio negocio = cache.get(nome);
+
+        intent.putExtra("idNegocio", negocio.getId());
 
         startActivity(intent);
     }
@@ -240,6 +252,8 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
                     .title(negocio.getNome())
                     .snippet(String.format("%.2f metros", distancia))
                     .position(new LatLng(negocio.getLatitude(), negocio.getLongitude())));
+
+            cache.put(negocio.getNome(), negocio);
         }
     }
 

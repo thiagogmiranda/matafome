@@ -10,26 +10,26 @@ import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.App;
 import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
 import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
-import br.com.unigranrio.matafome.dominio.modelo.Negocio;
+import br.com.unigranrio.matafome.dominio.modelo.DetalheNegocio;
 
 /**
  * Created by Thiago on 26/11/2015.
  */
-public class ObterNegocioPorLocalizacaoAsyncService extends AsyncTaskAbstrata<Double, Void, ResultadoAcao<Negocio>> {
+public class ObterNegocioPorLocalizacaoAsyncService extends AsyncTaskAbstrata<Long, Void, ResultadoAcao<DetalheNegocio>> {
     @Override
-    protected ResultadoAcao<Negocio> doInBackground(Double... params) {
-        ResultadoAcao<Negocio> resultado = new ResultadoAcao<>();
+    protected ResultadoAcao<DetalheNegocio> doInBackground(Long... params) {
+        ResultadoAcao<DetalheNegocio> resultado = new ResultadoAcao<>();
 
-        double lat = params[0];
-        double lng = params[1];
+        long idNegocio = params[0];
+        long idUsuario = params[1];
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        String url = App.montarUrlRest(R.string.url_obter_negocio_localizacao, lat, lng);
+        String url = App.montarUrlRest(R.string.url_obter_negocio_localizacao, idNegocio, idUsuario);
 
         try {
-            Negocio negocio = restTemplate.getForObject(url, Negocio.class);
+            DetalheNegocio negocio = restTemplate.getForObject(url, DetalheNegocio.class);
             resultado.setData(negocio);
         } catch (Exception e){
             List<Mensagem> erros = new ArrayList<>();
