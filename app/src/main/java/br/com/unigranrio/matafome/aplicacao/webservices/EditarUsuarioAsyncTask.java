@@ -15,9 +15,9 @@ import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
 import br.com.unigranrio.matafome.dominio.modelo.Usuario;
 
 /**
- * Created by WebFis33 on 15/09/2015.
+ * Created by WebFis33 on 09/11/2015.
  */
-public class CriarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, ResultadoAcao> {
+public class EditarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, ResultadoAcao> {
     @Override
     protected ResultadoAcao doInBackground(Usuario... params) {
         ResultadoAcao resultado = new ResultadoAcao();
@@ -26,7 +26,7 @@ public class CriarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, Resu
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-            String url = App.montarUrlRest(R.string.url_criar_usuario);
+            String url = App.montarUrlRest(R.string.url_editar_usuario);
 
             resultado = restTemplate.postForObject(url, params[0], ResultadoAcao.class);
 
@@ -40,6 +40,8 @@ public class CriarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, Resu
             erros.add(new Mensagem("Erro de conexão. Verifique se você está conectado à internet."));
 
             resultado.adicionarMensagens(erros);
+
+            exception.printStackTrace();
         }
 
         return resultado;

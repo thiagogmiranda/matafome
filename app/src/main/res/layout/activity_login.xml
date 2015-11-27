@@ -53,14 +53,6 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/signup_button"
-                android:id="@+id/btn_cadastro"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

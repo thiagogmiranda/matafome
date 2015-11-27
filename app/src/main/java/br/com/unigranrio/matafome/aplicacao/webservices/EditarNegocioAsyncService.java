@@ -12,34 +12,36 @@ import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.App;
 import br.com.unigranrio.matafome.dominio.acoes.Mensagem;
 import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
-import br.com.unigranrio.matafome.dominio.modelo.Usuario;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
 /**
- * Created by WebFis33 on 15/09/2015.
+ * Created by Thiago on 26/11/2015.
  */
-public class CriarUsuarioAsyncTask extends AsyncTaskAbstrata<Usuario, Void, ResultadoAcao> {
+public class EditarNegocioAsyncService extends AsyncTaskAbstrata<Negocio, Void, ResultadoAcao<Negocio>> {
     @Override
-    protected ResultadoAcao doInBackground(Usuario... params) {
-        ResultadoAcao resultado = new ResultadoAcao();
+    protected ResultadoAcao<Negocio> doInBackground(Negocio... negocios) {
+        ResultadoAcao<Negocio> resultado = new ResultadoAcao<>();
 
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-            String url = App.montarUrlRest(R.string.url_criar_usuario);
+            String url = App.montarUrlRest(R.string.url_editar_negocio);
 
-            resultado = restTemplate.postForObject(url, params[0], ResultadoAcao.class);
+            resultado = restTemplate.postForObject(url, negocios[0], ResultadoAcao.class);
 
             if(resultado.estaValido()){
                 ObjectMapper mapper = new ObjectMapper();
-                Usuario usuario =  mapper.convertValue(resultado.getData(), Usuario.class);
-                resultado.setData(usuario);
+                Negocio negocio =  mapper.convertValue(resultado.getData(), Negocio.class);
+                resultado.setData(negocio);
             }
         } catch (Exception exception) {
             List<Mensagem> erros = new ArrayList<>();
             erros.add(new Mensagem("Erro de conexão. Verifique se você está conectado à internet."));
 
             resultado.adicionarMensagens(erros);
+
+            exception.printStackTrace();
         }
 
         return resultado;

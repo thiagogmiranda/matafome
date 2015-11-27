@@ -8,13 +8,14 @@ import java.util.List;
 
 import br.com.unigranrio.matafome.R;
 import br.com.unigranrio.matafome.aplicacao.App;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
+
 /**
  * Created by WebFis33 on 15/09/2015.
  */
-public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTaskAbstrata<Double, Void, List<Barraca>> {
+public class ObterLanchesDentroDoRaioAsyncService extends AsyncTaskAbstrata<Double, Void, List<Negocio>> {
     @Override
-    protected List<Barraca> doInBackground(Double... params) {
+    protected List<Negocio> doInBackground(Double... params) {
         double raio = params[0];
         double lat = params[1];
         double lng = params[2];
@@ -24,10 +25,10 @@ public class ObterBarracasDentroDoRaioAsyncTask extends AsyncTaskAbstrata<Double
 
         String url = App.montarUrlRest(R.string.url_obter_barracas_proximas, raio, lat, lng);
 
-        Barraca[] retorno = new Barraca[0];
+        Negocio[] retorno = new Negocio[0];
 
         try {
-           retorno = restTemplate.getForObject(url, Barraca[].class);
+           retorno = restTemplate.getForObject(url, Negocio[].class);
         } catch (Exception e){
             e.printStackTrace();
         }

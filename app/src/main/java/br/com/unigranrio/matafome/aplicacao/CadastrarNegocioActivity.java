@@ -1,6 +1,7 @@
 package br.com.unigranrio.matafome.aplicacao;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,9 +25,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.aplicacao.webservices.CadastrarNegocioAsyncService;
+import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
+import br.com.unigranrio.matafome.dominio.acoes.ResultadoAcao;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
-public class CadastrarPontoVendaActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class CadastrarNegocioActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, OnAsyncTaskExecutedListener<ResultadoAcao<Negocio>> {
 
     private GoogleMap googleMap;
     private LatLng latLng;
@@ -46,9 +51,9 @@ public class CadastrarPontoVendaActivity extends AppCompatActivity implements On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cadastrar_ponto_venda, menu);
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_cadastrar_negocio, menu);
         return true;
     }
 
@@ -56,15 +61,9 @@ public class CadastrarPontoVendaActivity extends AppCompatActivity implements On
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.salvar_ponto_venda) {
-
+        if (id == R.id.salvar) {
             if (latLng != null) {
-                Barraca barraca = new Barraca();
-                barraca.setDescricao(txtDescricao.getText().toString());
-                barraca.setNome(txtNome.getText().toString());
-                //barraca.setIdDono();
-                barraca.setLatitude(latLng.latitude);
-                barraca.setLongitude(latLng.longitude);
+                salvar();
             }else {
                 Toast toast = Toast.makeText(this, "Selecione uma localização", Toast.LENGTH_LONG);
                 toast.show();
@@ -107,6 +106,43 @@ public class CadastrarPontoVendaActivity extends AppCompatActivity implements On
         if (location != null){
             LatLng deviceLocation = new LatLng(location.getLatitude(), location.getLongitude());
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, 18));
+        }
+    }
+
+    @Override
+    public void onAsyncTaskExecuted(ResultadoAcao<Negocio> resultadoAcao) {
+        if(resultadoAcao.estaValido()){
+            Intent intent = new Intent();
+            intent.setClass(this, GerenciarNegocioActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(intent);
+            finish();
+        } else {
+            App.exibirMensagensDeErro(this, resultadoAcao.getMensagens());
+        }
+    }
+
+    private void salvar() {
+        try {
+            Negocio negocio = new Negocio();
+            negocio.setDescricao(txtDescricao.getText().toString());
+            negocio.setNome(txtNome.getText().toString());
+            negocio.setIdDono(App.obterUsuarioLogado().getId());
+            negocio.setLatitude(latLng.latitude);
+            negocio.setLongitude(latLng.longitude);
+
+            CadastrarNegocioAsyncService service = new CadastrarNegocioAsyncService();
+            service.setOnExecutedListener(this);
+
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Salvando informações ...");
+
+            service.setProgressDialog(progressDialog);
+
+            service.execute(negocio);
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

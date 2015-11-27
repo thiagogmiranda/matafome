@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,8 +11,10 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,19 +31,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.aplicacao.webservices.ObterBarracasDentroDoRaioAsyncTask;
+import br.com.unigranrio.matafome.aplicacao.webservices.ObterLanchesDentroDoRaioAsyncService;
 import br.com.unigranrio.matafome.aplicacao.webservices.OnAsyncTaskExecutedListener;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
 public class PesquisaLanchesRapidosActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMapClickListener,
-        OnAsyncTaskExecutedListener<List<Barraca>> {
+        OnAsyncTaskExecutedListener<List<Negocio>> {
     private GoogleMap googleMap;
     private Location lastLocation;
 
     private Marker markerSelecao;
     private LinearLayout acoesContainer;
+    private Button btnVerMaisSobre;
 
     private TextView lblRaioBusca;
     private SeekBar raioBuscaSeekBar;
@@ -55,6 +57,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
         lblRaioBusca = (TextView) findViewById(R.id.lblRaioBusca);
         raioBuscaSeekBar = (SeekBar) findViewById(R.id.raioBuscaSeekBar);
         acoesContainer = (LinearLayout) findViewById(R.id.acoesContainer);
+        btnVerMaisSobre = (Button) findViewById(R.id.btnDetalhesNegocio);
 
         acoesContainer.setVisibility(View.INVISIBLE);
 
@@ -83,47 +86,53 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
             }
         });
 
+        btnVerMaisSobre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirTelaDetalhesNegocio();
+            }
+        });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    private void abrirTelaDetalhesNegocio() {
+        Intent intent = new Intent();
+        intent.setClass(this, DetalhesNegocioActivity.class);
+
+        startActivity(intent);
+    }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_buscar_barraca, menu);
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_pesquisa_lanches, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.listar_pontos_venda) {
-            Intent intent = new Intent();
-            intent.setClass(this, ListaPontosVendaActivity.class);
-
-            startActivity(intent);
-        } else if (id == R.id.sair) {
-            SharedPreferences prefs = getSharedPreferences("mata_fome", MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-
-            editor.putBoolean(LoginActivity.IS_USUARIO_LOGADO, false);
-            editor.remove(LoginActivity.EMAIL_USUARIO_LOGADO);
-
-            editor.commit();
-
-            Intent intent = new Intent();
-            intent.setClass(this, InicioActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            startActivity(intent);
-            finish();
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logout:
+                fazerLogout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void fazerLogout(){
+        App.deslogarUsuario();
+
+        Intent intent = new Intent();
+        intent.setClass(this, InicioActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -175,7 +184,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
             googleMap.addCircle(circleOptions);
 
             try {
-                ObterBarracasDentroDoRaioAsyncTask task = new ObterBarracasDentroDoRaioAsyncTask();
+                ObterLanchesDentroDoRaioAsyncService task = new ObterLanchesDentroDoRaioAsyncService();
 
                 String mensagem = getResources().getString(R.string.pesquisando_lanches);
 
@@ -196,6 +205,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
     public boolean onMarkerClick(Marker marker) {
         this.markerSelecao = marker;
 
+        btnVerMaisSobre.setText("Ver mais sobre " + marker.getTitle());
         acoesContainer.setVisibility(View.VISIBLE);
 
         return false;
@@ -209,7 +219,7 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
             distance = location.distanceTo(lastLocation);
         }
 
-        if (distance >= 15) {
+        if (distance >= (raioBuscaSeekBar.getProgress() / 2)) {
             lastLocation = location;
 
             desenharLocalizador();
@@ -222,14 +232,14 @@ public class PesquisaLanchesRapidosActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAsyncTaskExecuted(List<Barraca> barracas) {
-        for (Barraca barraca : barracas) {
-            double distancia = distancia(lastLocation.getLatitude(), lastLocation.getLongitude(), barraca.getLatitude(), barraca.getLongitude());
+    public void onAsyncTaskExecuted(List<Negocio> negocios) {
+        for (Negocio negocio : negocios) {
+            double distancia = distancia(lastLocation.getLatitude(), lastLocation.getLongitude(), negocio.getLatitude(), negocio.getLongitude());
 
             googleMap.addMarker(new MarkerOptions()
-                    .title(barraca.getNome())
+                    .title(negocio.getNome())
                     .snippet(String.format("%.2f metros", distancia))
-                    .position(new LatLng(barraca.getLatitude(), barraca.getLongitude())));
+                    .position(new LatLng(negocio.getLatitude(), negocio.getLongitude())));
         }
     }
 

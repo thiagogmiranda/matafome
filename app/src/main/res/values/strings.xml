@@ -36,10 +36,10 @@
     <string name="server_url">https://matafomeserver.herokuapp.com/</string>
     <string name="url_criar_usuario">usuario/criar</string>
     <string name="url_obter_usuario_por_email">usuario/obter-por-email?email=%s</string>
-    <string name="url_obter_barracas_proximas">barraca/obter-todas-dentro-raio?raio=%1$.2f&amp;lat=%2$.10f&amp;lng=%3$.10f</string>
+    <string name="url_obter_barracas_proximas">lanches/todos-no-raio?raio=%1$.2f&amp;lat=%2$.10f&amp;lng=%3$.10f</string>
     <string name="pesquisando_lanches">Pesquisando lanches rápidos dentro de %d metros.</string>
     <string name="item_ponto_venda">Ponto Venda</string>
-    <string name="url_obter_pontos_venda_usuario">barraca/obter-todas-usuario?email=%s</string>
+    <string name="url_obter_negocio_usuario">negocio?idDono=%d</string>
     <string name="title_activity_lista_pontos_venda">Meus Pontos de Venda</string>
     <string name="listar_barracas">Meus Pontos de Venda</string>
     <string name="cadastrar_ponto_venda">cadastrar</string>
@@ -47,5 +47,13 @@
     <string name="descricao_ponto_venda">Descrição</string>
     <string name="localizacao_ponto_venda">Localização</string>
     <string name="salvar_ponto_venda">salvar</string>
+    <string name="cadastre_se">CADASTRE-SE</string>
+    <string name="entre">ENTRE</string>
+    <string name="ou">OU</string>
+    <string name="url_editar_usuario">usuario/editar</string>
+    <string name="url_cadastrar_negocio">negocio/cadastrar</string>
+    <string name="url_obter_avaliacoes_negocio">avaliacao/obter-todas?idVendedor=%d</string>
+    <string name="url_editar_negocio">negocio/editar</string>
+    <string name="url_obter_negocio_localizacao">negocio/obter-por-localizacao?lat=%1$.10f&amp;lng=%2$.10f</string>
 
 </resources>

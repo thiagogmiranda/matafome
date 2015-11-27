@@ -10,13 +10,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.unigranrio.matafome.R;
-import br.com.unigranrio.matafome.dominio.modelo.Barraca;
+import br.com.unigranrio.matafome.dominio.modelo.Negocio;
 
 /**
  * Created by WebFis33 on 15/10/2015.
  */
-public class PontoVendaAdapter extends ArrayAdapter<Barraca> {
-    public PontoVendaAdapter(Context context, int resource, List<Barraca> objects) {
+public class PontoVendaAdapter extends ArrayAdapter<Negocio> {
+    public PontoVendaAdapter(Context context, int resource, List<Negocio> objects) {
         super(context, resource, objects);
     }
 
@@ -29,7 +29,7 @@ public class PontoVendaAdapter extends ArrayAdapter<Barraca> {
             view = inflater.inflate(R.layout.item_lista_ponto_venda, null);
         }
 
-        Barraca item = getItem(position);
+        Negocio item = getItem(position);
 
         if(item != null) {
             TextView txtPontoVenda = (TextView)view.findViewById(R.id.txtNomePontoVenda);

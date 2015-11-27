@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context="br.com.unigranrio.matafome.aplicacao.CadastroTipoUsuarioActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:text="SOU UM FAMINTO"
+            android:id="@+id/btnQueroComer"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="40dp"
+            android:textSize="60dp"
+            android:layout_weight="0.5"
+            android:layout_margin="0dp"
+            android:background="@drawable/quero_comer"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:text="SOU MATADOR DE FOME"
+            android:id="@+id/btnQueroVender"
+            android:textSize="50dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/quero_vender"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

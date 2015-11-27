@@ -18,7 +18,7 @@
     <application
         android:name=".aplicacao.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/burger"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
@@ -52,10 +52,30 @@
             android:label="@string/title_activity_buscar_barraca" >
         </activity>
         <activity
-            android:name=".aplicacao.ListaPontosVendaActivity"
-            android:label="@string/title_activity_lista_pontos_venda" >
+            android:name=".aplicacao.CadastrarNegocioActivity"
+            android:label="Cadastre o seu Negócio!" >
         </activity>
-        <activity android:name=".aplicacao.CadastrarPontoVendaActivity" >
+        <activity
+            android:name=".aplicacao.CadastroTipoUsuarioActivity"
+            android:label="Que tipo de usuário você é?"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".aplicacao.GerenciarNegocioActivity"
+            android:label="Gerenciar Negócio" >
+        </activity>
+        <activity
+            android:name=".aplicacao.ListaAvaliacoesNegocioActivity"
+            android:label="Avaliações" >
+        </activity>
+        <activity android:name=".aplicacao.EdicaoNegocioActivity" >
+        </activity>
+        <activity
+            android:name=".aplicacao.DetalhesNegocioActivity"
+            android:label="Detalhes do negócio" >
+        </activity>
+        <activity android:name=".aplicacao.EnviarAvaliacaoActivity"
+            android:label="Enviar avaliação">
         </activity>
     </application>
 
