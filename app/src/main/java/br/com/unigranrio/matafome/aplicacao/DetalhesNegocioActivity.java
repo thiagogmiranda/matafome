@@ -35,6 +35,7 @@ public class DetalhesNegocioActivity extends AppCompatActivity implements OnAsyn
     private Negocio negocio;
 
     private Button btnAvaliar;
+    private Button btnAvaliacoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class DetalhesNegocioActivity extends AppCompatActivity implements OnAsyn
         txtComentario = (TextView) findViewById(R.id.txtComentario);
 
         btnAvaliar = (Button) findViewById(R.id.btnAvaliar);
+        btnAvaliacoes = (Button) findViewById(R.id.btnVerAvaliacoes);
 
         avaliacaoContainer = (LinearLayout) findViewById(R.id.suaAvaliacaoContainer);
         avalieContainer = (LinearLayout) findViewById(R.id.avalieContainer);
@@ -64,7 +66,22 @@ public class DetalhesNegocioActivity extends AppCompatActivity implements OnAsyn
             }
         });
 
+        btnAvaliacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirListaDeAvaliacoes();
+            }
+        });
+
         carregarDetalhes(idNegocio);
+    }
+
+    private void abrirListaDeAvaliacoes() {
+        Intent intent = new Intent();
+        intent.setClass(this, ListaAvaliacoesNegocioActivity.class);
+        intent.putExtra("idDono", negocio.getIdDono());
+
+        startActivity(intent);
     }
 
     private static final int AVALIAR = 10;
@@ -133,6 +150,17 @@ public class DetalhesNegocioActivity extends AppCompatActivity implements OnAsyn
         } else {
             avaliacaoContainer.setVisibility(View.INVISIBLE);
             avalieContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case AVALIAR:
+                if (resultCode == RESULT_OK) carregarDetalhes(negocio.getId());
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

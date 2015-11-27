@@ -40,7 +40,13 @@ public class ListaAvaliacoesNegocioActivity extends AppCompatActivity implements
 
     private void carregarAvaliacoes() {
         try {
-            Usuario usuarioLogado = App.obterUsuarioLogado();
+            Bundle extras = getIntent().getExtras();
+            long idDono = extras.getLong("idDono");
+
+            if(idDono == 0){
+                Usuario usuarioLogado = App.obterUsuarioLogado();
+                idDono = usuarioLogado.getId();
+            }
 
             ObterAvaliacoesAsyncService service = new ObterAvaliacoesAsyncService();
             service.setOnExecutedListener(this);
@@ -50,7 +56,7 @@ public class ListaAvaliacoesNegocioActivity extends AppCompatActivity implements
 
             service.setProgressDialog(progressDialog);
 
-            service.execute(usuarioLogado.getId());
+            service.execute(idDono);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,7 +75,8 @@ public class ListaAvaliacoesNegocioActivity extends AppCompatActivity implements
 
                 App.exibirMensagensDeErro(this, resultadoAcao.getMensagens());
             } else {
-                this.avaliacoes = avaliacoes;
+                this.avaliacoes.clear();
+                this.avaliacoes.addAll(avaliacoes);
                 this.adapter.notifyDataSetChanged();
             }
         } else {

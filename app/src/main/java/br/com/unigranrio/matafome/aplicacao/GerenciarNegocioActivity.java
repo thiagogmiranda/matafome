@@ -170,6 +170,7 @@ public class GerenciarNegocioActivity extends AppCompatActivity implements OnAsy
     private void iniciarActivityListaAvaliacoesNegocio() {
         Intent intent = new Intent();
         intent.setClass(this, ListaAvaliacoesNegocioActivity.class);
+        intent.putExtra("idDono", App.obterUsuarioLogado().getId());
 
         startActivity(intent);
     }
