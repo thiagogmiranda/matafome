@@ -69,7 +69,7 @@ public class ListaAvaliacoesNegocioActivity extends AppCompatActivity implements
 
             if(avaliacoes.size() == 0){
                 List<Mensagem> mensagems = new ArrayList<>();
-                mensagems.add(new Mensagem("Ainda não avaliaram o seu negócio"));
+                mensagems.add(new Mensagem("Ninguém avaliou este negócio."));
 
                 resultadoAcao.adicionarMensagens(mensagems);
 
