@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.unigranrio.matafome" >
+    package="br.com.unigranrio.matafome"
+    android:versionCode="1"
+    android:versionName="0.1">
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
